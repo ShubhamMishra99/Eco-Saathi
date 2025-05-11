@@ -1,62 +1,51 @@
 import React, { useState } from 'react';
 
-function Signup({ onSuccess }) {
+const Signup = () => {
   const [step, setStep] = useState(1);
   const [phone, setPhone] = useState('');
+  const [otp, setOtp] = useState('');
   const [generatedOtp, setGeneratedOtp] = useState('');
-  const [otpInput, setOtpInput] = useState('');
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSendOtp = (e) => {
-    e.preventDefault();
+  const handleSendOtp = () => {
     if (!/^\d{10}$/.test(phone)) {
-      alert('Phone number must be 10 digits');
+      alert('Enter a valid 10-digit phone number');
       return;
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    setGeneratedOtp(otp);
-    alert(`Your OTP (demo): ${otp}`);
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    if (users[phone]) {
+      alert('User already exists. Try logging in.');
+      return;
+    }
+
+    const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(newOtp);
+    alert(`Your OTP is: ${newOtp}`);
     setStep(2);
   };
 
-  const handleVerifyOtp = (e) => {
-    e.preventDefault();
-    if (otpInput !== generatedOtp) {
+  const handleVerifyOtp = () => {
+    if (otp !== generatedOtp) {
       alert('Incorrect OTP');
       return;
     }
     setStep(3);
   };
 
-  const handleFinalSubmit = (e) => {
-    e.preventDefault();
-    if (!name || !email || !password || !confirmPassword) {
-      alert('Please fill out all fields');
-      return;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      alert('Invalid email format');
-      return;
-    }
-    if (password.length < 6) {
-      alert('Password must be at least 6 characters');
-      return;
-    }
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
+  const handleSignup = () => {
+    if (!name || !email || !password) {
+      alert('Fill all fields');
       return;
     }
 
-    const userData = { phone, name, email, password };
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('isLoggedIn', 'true');
-    alert('Signup successful');
-    onSuccess();
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    users[phone] = { name, email, password };
+    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem('currentUser', phone);
+    window.location.href = '/profile';
   };
 
   return (
@@ -64,66 +53,29 @@ function Signup({ onSuccess }) {
       <h2>Signup</h2>
 
       {step === 1 && (
-        <form onSubmit={handleSendOtp}>
-          <input
-            type="tel"
-            placeholder="Phone Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-          <button type="submit">Send OTP</button>
-        </form>
+        <>
+          <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone Number" />
+          <button onClick={handleSendOtp}>Send OTP</button>
+        </>
       )}
 
       {step === 2 && (
-        <form onSubmit={handleVerifyOtp}>
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otpInput}
-            onChange={(e) => setOtpInput(e.target.value)}
-            required
-          />
-          <button type="submit">Verify OTP</button>
-        </form>
+        <>
+          <input value={otp} onChange={e => setOtp(e.target.value)} placeholder="Enter OTP" />
+          <button onClick={handleVerifyOtp}>Verify OTP</button>
+        </>
       )}
 
       {step === 3 && (
-        <form onSubmit={handleFinalSubmit}>
-          <input
-            type="text"
-            placeholder="Full Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email Address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Finish Signup</button>
-        </form>
+        <>
+          <input value={name} onChange={e => setName(e.target.value)} placeholder="Full Name" />
+          <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+          <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+          <button onClick={handleSignup}>Signup</button>
+        </>
       )}
     </div>
   );
-}
+};
 
 export default Signup;
