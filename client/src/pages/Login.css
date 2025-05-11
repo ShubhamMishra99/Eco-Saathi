@@ -1,0 +1,61 @@
+.login-card {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 24px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.phone-btn {
+  background-color: #e7f3ff;
+  color: #0070f3;
+}
+
+.google-btn {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.or {
+  margin: 16px 0;
+  font-weight: bold;
+}
+
+.email-link {
+  color: #0070f3;
+  text-decoration: underline;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #666;
+}
+
+.footer-text a {
+  color: #0070f3;
+}
