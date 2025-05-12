@@ -18,6 +18,7 @@ function Login({ onSuccess }) {
       storedUser.password === password
     ) {
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUser', phone); // ✅ save phone for profile
       onSuccess();
     } else {
       alert('Invalid phone number or password');
@@ -28,7 +29,7 @@ function Login({ onSuccess }) {
     e.preventDefault();
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (!storedUser || storedUser.phone !== phone) {
-      alert('No user found with this phone number');
+      alert('No user found for this phone number');
       return;
     }
 
@@ -42,6 +43,7 @@ function Login({ onSuccess }) {
     e.preventDefault();
     if (otpInput === generatedOtp) {
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('currentUser', phone); // ✅ for Profile.jsx
       onSuccess();
     } else {
       alert('Invalid OTP');
@@ -69,6 +71,7 @@ function Login({ onSuccess }) {
             required
           />
           <button type="submit">Login</button>
+
           <p style={{ marginTop: 8 }}>
             Prefer OTP?{' '}
             <span
@@ -91,7 +94,6 @@ function Login({ onSuccess }) {
             required
             disabled={otpSent}
           />
-
           {otpSent && (
             <input
               type="text"
@@ -101,8 +103,8 @@ function Login({ onSuccess }) {
               required
             />
           )}
-
           <button type="submit">{otpSent ? 'Verify OTP' : 'Send OTP'}</button>
+
           <p style={{ marginTop: 8 }}>
             Use password?{' '}
             <span

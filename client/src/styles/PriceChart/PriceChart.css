@@ -1,0 +1,114 @@
+/* src/styles/PriceChart/PriceChart.css */
+
+.price-chart-container {
+  padding: 20px 15px; /* Adjusted padding */
+  text-align: center;
+  background-color: #f0f4f0; /* Light greenish-grey background for the section */
+  margin-top: 20px;
+}
+
+.price-chart-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.price-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid */
+  gap: 20px; /* Spacing between cards */
+  justify-content: center; /* Center grid items if they don't fill the row */
+  max-width: 1200px; /* Max width for the grid container */
+  margin: 0 auto; /* Center the grid container */
+}
+
+.price-card {
+  background-color: #ffffff;
+  border-radius: 12px; /* More rounded corners */
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute space for consistent card height feel */
+  min-height: 220px; /* Minimum height for cards */
+}
+
+.price-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.price-card-icon {
+  font-size: 48px; /* Larger icon size */
+  margin-bottom: 12px;
+  color: #4caf50; /* Green color for icons */
+}
+
+.price-card-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  background-color: #e8f5e9; /* Light green background for price */
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block; /* To make background fit content */
+}
+
+.price-card-name {
+  font-size: 16px; 
+  color: #555;
+  font-weight: 600; 
+  margin-bottom: 10px;
+  flex-grow: 1; 
+}
+
+.price-card-notes {
+  font-size: 12px;
+  color: #777;
+  line-height: 1.4;
+}
+
+.price-card-notes strong {
+  color: #d9534f; /* Reddish color for important notes */
+  font-weight: bold;
+}
+
+/* Responsive adjustments for the price chart grid */
+@media (max-width: 768px) {
+  .price-chart-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+  }
+  .price-card {
+    padding: 15px;
+    min-height: 200px;
+  }
+  .price-card-icon {
+    font-size: 40px;
+  }
+  .price-card-price {
+    font-size: 16px;
+  }
+  .price-card-name {
+    font-size: 14px;
+  }
+  .price-card-notes {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .price-chart-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+  }
+   .price-chart-container {
+    padding: 15px 10px;
+  }
+  .price-card {
+    min-height: auto; /* Let height be auto on smallest screens if needed */
+  }
+}

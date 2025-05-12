@@ -1,80 +1,174 @@
 .profile-page {
   display: flex;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9; /* Light background */
+  color: #333; /* Dark text */
   min-height: 100vh;
-  background: #f4f4f4;
-  font-family: Arial, sans-serif;
-  position: relative;
-}
-
-.back-btn {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  padding: 6px 12px;
-  background: transparent;
-  color: #333;
-  font-size: 24px;
-  border: none;
-  cursor: pointer;
-  z-index: 1;
 }
 
 .sidebar {
   width: 250px;
-  background: white;
+  background-color: #ffffff; /* White sidebar */
   padding: 20px;
-  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .profile-info {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .avatar {
-  width: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   margin-bottom: 10px;
+  border: 2px solid #4caf50; /* Green border */
 }
 
 .username {
-  margin: 5px 0;
-  font-size: 20px;
-  color: #333;
-}
-
-.user-role {
-  color: #777;
-  font-size: 14px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333; /* Dark text */
 }
 
 .nav-links button {
   display: block;
   width: 100%;
-  padding: 10px 14px;
-  margin: 8px 0;
-  background: #007f5f;
-  color: white;
+  background: none;
   border: none;
-  border-radius: 6px;
+  color: #333; /* Dark text */
   text-align: left;
+  padding: 10px 0;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 .nav-links button:hover {
-  background: #005f46;
+  color: #4caf50; /* Green hover effect */
 }
 
 .logout-btn {
-  background: #e63946 !important;
+  background-color: #4caf50; /* Green button */
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
 }
 
 .logout-btn:hover {
-  background: #b02230 !important;
+  background-color: #388e3c; /* Darker green hover */
 }
 
 .profile-content {
   flex: 1;
-  padding: 40px;
+  padding: 20px;
+}
+
+.profile-header {
+  text-align: center;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.profile-banner {
+  background-color: #4caf50; /* Green banner */
+  height: 100px;
+  border-radius: 10px;
+}
+
+.profile-avatar {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid #ffffff; /* White border */
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-name {
+  margin-top: 60px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333; /* Dark text */
+}
+
+.edit-profile-btn {
+  background-color: #4caf50; /* Green button */
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+  position: absolute;
+  bottom: -20px;
+  left: 20px;
+}
+
+.edit-profile-btn:hover {
+  background-color: #388e3c; /* Darker green hover */
+}
+
+.profile-details {
+  background-color: #ffffff; /* White card */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd; /* Light gray border */
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: bold;
+  color: #666; /* Medium gray text */
+}
+
+.detail-value {
+  color: #333; /* Dark text */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.edit-btn,
+.reveal-btn {
+  background-color: #4caf50; /* Green button */
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.edit-btn:hover,
+.reveal-btn:hover {
+  background-color: #388e3c; /* Darker green hover */
 }

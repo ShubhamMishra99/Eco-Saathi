@@ -5,9 +5,11 @@ import '../styles/profile.css';
 function Profile() {
   const navigate = useNavigate();
 
+  const currentPhone = localStorage.getItem('currentUser');
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+
   const handleLogout = () => {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
+    localStorage.setItem('isLoggedIn', 'false');
     navigate('/');
   };
 
@@ -18,8 +20,16 @@ function Profile() {
       <aside className="sidebar">
         <div className="profile-info">
           <img src="/avatar.png" alt="User Avatar" className="avatar" />
-          <h2 className="username">John Doe</h2>
-          <p className="user-role">Student</p>
+          <h2 className="username">
+            {storedUser && storedUser.phone === currentPhone
+              ? storedUser.name
+              : 'Guest'}
+          </h2>
+          <p className="user-role">
+            {storedUser && storedUser.phone === currentPhone
+              ? storedUser.phone
+              : 'No phone found'}
+          </p>
         </div>
         <nav className="nav-links">
           <button onClick={() => navigate('/rewards')}>🎁 Rewards</button>

@@ -11,6 +11,7 @@ function Signup({ onSuccess }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  // Step 1: Send OTP
   const handleSendOtp = (e) => {
     e.preventDefault();
     if (!/^\d{10}$/.test(phone)) {
@@ -24,6 +25,7 @@ function Signup({ onSuccess }) {
     setStep(2);
   };
 
+  // Step 2: Verify OTP
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     if (otpInput !== generatedOtp) {
@@ -33,28 +35,37 @@ function Signup({ onSuccess }) {
     setStep(3);
   };
 
+  // Step 3: Register account
   const handleFinalSubmit = (e) => {
     e.preventDefault();
+
     if (!name || !email || !password || !confirmPassword) {
       alert('Please fill out all fields');
       return;
     }
+
     if (!/^\S+@\S+\.\S+$/.test(email)) {
       alert('Invalid email format');
       return;
     }
+
     if (password.length < 6) {
       alert('Password must be at least 6 characters');
       return;
     }
+
     if (password !== confirmPassword) {
       alert('Passwords do not match');
       return;
     }
 
     const userData = { phone, name, email, password };
+
+    // ✅ Save everything to localStorage
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('currentUser', phone); // ✅ Needed for Profile button
+
     alert('Signup successful');
     onSuccess();
   };
