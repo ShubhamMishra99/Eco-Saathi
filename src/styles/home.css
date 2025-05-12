@@ -1,0 +1,75 @@
+.home {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  background: #f9f9f9;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo {
+  font-size: 24px;
+  margin-right: auto;
+}
+.search-box {
+  padding: 8px;
+  flex: 1;
+}
+.search-btn {
+  padding: 8px 16px;
+  background: black;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.auth-links a,
+.profile-actions button {
+  margin-left: 10px;
+  background: #000;
+  color: #fff;
+  padding: 6px 12px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 8px;
+}
+.hero-text h2 {
+  font-size: 28px;
+}
+.hero-img {
+  width: 200px;
+  object-fit: contain;
+}
+.categories,
+.products {
+  margin-top: 30px;
+}
+.category-list,
+.product-list {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+}
+.category-item,
+.product-card {
+  background: white;
+  padding: 10px;
+  min-width: 100px;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.product-img {
+  height: 100px;
+  background: #ddd;
+  margin-bottom: 8px;
+}
