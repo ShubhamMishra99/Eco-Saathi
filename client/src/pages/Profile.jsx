@@ -10,8 +10,12 @@ function Profile() {
 
   const handleLogout = () => {
     localStorage.setItem('isLoggedIn', 'false');
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('user');
     navigate('/');
   };
+
+  const avatarUrl = storedUser?.avatar || 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
 
   return (
     <div className="profile-page">
@@ -19,7 +23,7 @@ function Profile() {
 
       <aside className="sidebar">
         <div className="profile-info">
-          <img src="/avatar.png" alt="User Avatar" className="avatar" />
+          <img src={avatarUrl} alt="User Avatar" className="avatar" />
           <h2 className="username">
             {storedUser && storedUser.phone === currentPhone
               ? storedUser.name
@@ -40,7 +44,7 @@ function Profile() {
       </aside>
 
       <main className="profile-content">
-        <h2>Welcome to your profile</h2>
+        <h2>Welcome, {storedUser?.name || 'Guest'}</h2>
         <p>Select an option from the sidebar to get started.</p>
       </main>
     </div>
