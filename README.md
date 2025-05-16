@@ -8,7 +8,9 @@ Eco Saathi is a waste management platform designed to help users manage and trac
 ```bash
 npm install
 cd client
-npm install
 npm run dev
+```
+2. For Backend
+```bash
 cd server
 node server.js
