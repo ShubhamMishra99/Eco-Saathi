@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Profile from './pages/Profile';
+import PickupSchedule from './components/PickupSchedule/PickupSchedule'; // ✅ import it
 import './styles/auth.css';
-import './styles/home.css';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -13,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/pickup-schedule" element={<PickupSchedule />} /> {/* ✅ Add this line */}
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
