@@ -1,0 +1,121 @@
+.pickup-container {
+  padding: 2rem;
+  background-color: #f7fbf7;
+  font-family: 'Poppins', sans-serif;
+}
+
+.pickup-form {
+  max-width: 600px;
+  margin: auto;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-group {
+  flex: 1;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.optional {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.input-icon-wrapper {
+  position: relative;
+}
+
+.input-icon-wrapper .icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fff;
+  box-sizing: border-box;
+}
+
+textarea.custom-input {
+  resize: vertical;
+}
+
+.submit-button {
+  background-color: #34a853;
+  color: white;
+  font-weight: 600;
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 128, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.submit-button:hover {
+  background-color: #2c8f45;
+}
+
+.note {
+  margin-top: 1rem;
+  font-style: italic;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.link {
+  color: #0c8b1e;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.time-warning {
+  color: #e53935;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
+/* Datepicker override (optional improvement for match) */
+.react-datepicker {
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+}
+
+.react-datepicker__header {
+  background-color: #f1f4ef;
+  border-bottom: 1px solid #ccc;
+}
+
+.react-datepicker__day--selected {
+  background-color: #1a73e8;
+  color: white;
+}
+
+.react-datepicker__day:hover {
+  background-color: #e0e0e0;
+}
