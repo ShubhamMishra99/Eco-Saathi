@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './components/Home';
-import PickupSchedule from './components/PickupSchedule'; // Adjust path if different
+import Home from './Home/Home';
+import PickupSchedule from './Home/PickupSchedule/PickupSchedule'; // Adjust path if different
 
 function App() {
   return (
