@@ -1,7 +1,7 @@
 // src/components/PriceChart/PriceChart.jsx
 import React from 'react';
 import { priceChartItems, formatNote } from './priceChartData'; // Import data and helper
-import '../../styles/PriceChart/PriceChart.css'; // Import specific styles
+import './PriceChart.css'; // Import specific styles
 
 function PriceChart() {
   return (

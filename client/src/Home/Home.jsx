@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Login from '../pages/Login';
-import Signup from '../pages/Signup';
+import Login from './Auth/Login';
+import Signup from './Auth/Signup';
 import PriceChart from './PriceChart/PriceChart';
-import About from './PriceChart/About/About';
+import About from './About/About';
 import { useNavigate } from 'react-router-dom';
-import '../styles/home.css';
+import './home.css';
 
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
