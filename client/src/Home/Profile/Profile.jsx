@@ -68,7 +68,7 @@ function Profile() {
         <nav className="nav-links">
           <button onClick={() => navigate('/rewards')}>🎁 Rewards</button>
           <button onClick={() => navigate('/history')}>📜 History</button>
-          <button onClick={() => navigate('/pickup-schedule')}>📅 Schedules</button>
+          <button onClick={() => navigate('/Schedules')}>📅 Schedules</button>
           <button className="logout-btn" onClick={handleLogout}>
             🚪 Logout
           </button>
