@@ -3,10 +3,10 @@ import Login from './Auth/Login';
 import Signup from './Auth/Signup';
 import PriceChart from './PriceChart/PriceChart';
 import About from './About/About';
+import PickupSchedule from './PickupSchedule/PickupSchedule'; // Adjust relative path
 import { useNavigate } from 'react-router-dom';
 import './home.css';
 
-// ...existing imports...
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -14,6 +14,7 @@ function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showPriceChart, setShowPriceChart] = useState(false);
   const [schedules, setSchedules] = useState([]);
+  const [showPickupModal, setShowPickupModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function Home() {
         return next;
       });
     } else if (targetId === 'pickup-schedule') {
-      navigate('/pickup-schedule');
+      setShowPickupModal(true); // ← updated to show modal instead of navigate
     } else {
       const element = document.getElementById(targetId);
       if (element) {
@@ -114,9 +115,7 @@ function Home() {
       <section className="carbonex-hero">
         <div className="hero-left">
           <h4 className="hero-subtitle">WE ARE</h4>
-          <h1 className="hero-title">
-            SOLVING <br /> GLOBAL <br /> PROBLEMS
-          </h1>
+          <h1 className="hero-title">SOLVING <br /> GLOBAL <br /> PROBLEMS</h1>
           <p className="hero-desc">
             EcoSaathi makes a track to environmental solutions with a positive impact on climate changes. Join the community, building a balance of business and society with safe nature and better future for our planet.
           </p>
@@ -137,12 +136,7 @@ function Home() {
           </div>
         </div>
         <div className="hero-right">
-          {/* Replace with your SVG or illustration */}
-          <img
-            src="/assets/eco-illustration.svg"
-            alt="EcoSaathi Illustration"
-            className="hero-illustration"
-          />
+          <img src="client/public/eco-illustration.svg" alt="EcoSaathi Illustration" className="hero-illustration" />
         </div>
       </section>
 
@@ -151,61 +145,42 @@ function Home() {
         <About />
       </section>
 
-      {/* Price Chart Section (only show when button clicked) */}
+      {/* Price Chart Section */}
       {showPriceChart && (
         <section id="price-chart-section" className="price-chart-section">
           <PriceChart />
         </section>
       )}
 
-      {/* Sidebar overlay */}
+      {/* Sidebar Overlay */}
       {sidebarOpen && (
-        <div
-          className="sidebar-overlay"
-          onClick={() => setSidebarOpen(false)}
-        />
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
       )}
 
       {/* Sidebar */}
       <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
-        <button className="close-btn" onClick={() => setSidebarOpen(false)}>
-          ×
-        </button>
+        <button className="close-btn" onClick={() => setSidebarOpen(false)}>×</button>
         <div className="profile-info">
           <img src={avatarUrl} alt="User Avatar" className="avatar" />
-          <h2 className="username">
-            {storedUser && storedUser.phone === currentPhone
-              ? storedUser.name
-              : 'Guest'}
-          </h2>
-          <p className="user-role">
-            {storedUser && storedUser.phone === currentPhone
-              ? storedUser.phone
-              : 'No phone found'}
-          </p>
+          <h2 className="username">{storedUser?.phone === currentPhone ? storedUser.name : 'Guest'}</h2>
+          <p className="user-role">{storedUser?.phone === currentPhone ? storedUser.phone : 'No phone found'}</p>
         </div>
         <nav className="nav-links">
           <button onClick={() => alert('Rewards clicked')}>🎁 Rewards</button>
           <button onClick={() => alert('History clicked')}>📜 History</button>
-          <button onClick={() => navigate('/pickup-schedule')}>📅 Schedules</button>
-          <button className="logout-btn" onClick={handleLogout}>
-            🚪 Logout
-          </button>
+          <button onClick={() => navigate('/Schedules')}>📅 Schedules</button>
+          <button className="logout-btn" onClick={handleLogout}>🚪 Logout</button>
         </nav>
-        {/* Show schedules below nav */}
+
+        {/* Show saved schedules */}
         {schedules.length > 0 && (
           <div className="schedules-list" style={{ padding: '1rem' }}>
             <h4>My Schedules</h4>
             <ul>
               {schedules.map((s, i) => (
                 <li key={i} style={{ marginBottom: 8 }}>
-                  <strong>
-                    {s.day ? `${s.day}, ` : ''}
-                    {s.date} {s.time}
-                  </strong>
-                  <br />
-                  {s.address}
-                  <br />
+                  <strong>{s.day ? `${s.day}, ` : ''}{s.date} {s.time}</strong><br />
+                  {s.address}<br />
                   <em>{s.description}</em>
                 </li>
               ))}
@@ -214,7 +189,7 @@ function Home() {
         )}
       </aside>
 
-      {/* Modals for Login and Signup */}
+      {/* Login Modal */}
       {showLogin && (
         <div className="modal">
           <div className="modal-content">
@@ -227,6 +202,7 @@ function Home() {
         </div>
       )}
 
+      {/* Signup Modal */}
       {showSignup && (
         <div className="modal">
           <div className="modal-content">
@@ -235,6 +211,16 @@ function Home() {
               setShowSignup(false);
               setIsLoggedIn(true);
             }} />
+          </div>
+        </div>
+      )}
+
+      {/* Pickup Schedule Fullscreen Modal */}
+      {showPickupModal && (
+        <div className="pickup-modal-overlay">
+          <div className="pickup-modal-content">
+            <button className="pickup-modal-close" onClick={() => setShowPickupModal(false)}>×</button>
+            <PickupSchedule />
           </div>
         </div>
       )}
