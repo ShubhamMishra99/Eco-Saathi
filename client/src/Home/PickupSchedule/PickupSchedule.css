@@ -60,7 +60,7 @@ textarea.custom-input {
 }
 
 .submit-button {
-  background-color: #34a853;
+  background-color: #a3c93a;
   color: white;
   font-weight: 600;
   padding: 0.9rem 1.5rem;
@@ -74,7 +74,7 @@ textarea.custom-input {
 }
 
 .submit-button:hover {
-  background-color: #2c8f45;
+  background-color: #9ace68;
 }
 
 .note {
