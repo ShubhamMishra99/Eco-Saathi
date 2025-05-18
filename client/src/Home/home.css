@@ -1,128 +1,332 @@
-/* src/styles/home.css */
-/* Ensure this file now ONLY contains styles for the Home component's layout, header, etc. */
-/* Styles specific to the Price Chart have been MOVED to src/styles/PriceChart/PriceChart.css */
-
-.header {
-  display: flex; 
-  flex-direction: row; 
-  align-items: center; 
-  justify-content: space-between; 
-  width: 100%; 
-  padding: 15px 25px; 
-  background: linear-gradient(90deg, #4caf50, #81c784); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-  box-sizing: border-box; 
-  color: #fff; 
-  position: fixed; /* Fix the header at the top */
-  top: 0; /* Align it to the top of the viewport */
-  left: 0; /* Align it to the left of the viewport */
-  z-index: 1000; /* Ensure the header stays above other elements */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', Arial, sans-serif;
+  background: #f8f6f3;
 }
 
-.main {
-  margin-top: 80px; /* Add margin to prevent content from overlapping the fixed header */
+.carbonex-home {
+  min-height: 100vh;
+  background: #f8f6f3;
+  display: flex;
+  flex-direction: column;
 }
 
-.logo {
-  font-size: 28px; 
-  font-weight: bold; 
-  color: #ffffff; 
-  cursor: pointer; 
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); 
+.carbonex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 4rem 1rem 4rem;
+  background: transparent;
 }
 
-.nav-options {
-  display: flex; 
-  flex-direction: row; 
-  gap: 20px; 
-  list-style: none; 
-  margin: 0; 
-  padding: 0; 
+.carbonex-logo {
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #333;
+  cursor: pointer;
 }
 
-.nav-options button {
-  background: #ffffff; 
-  border: 2px solid #4caf50; 
-  color: #4caf50; 
-  font-size: 16px; 
-  cursor: pointer; 
-  padding: 10px 15px; 
-  border-radius: 8px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-  transition: all 0.3s ease; 
+.carbonex-nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
 }
 
-.nav-options button:hover {
-  background: #4caf50; 
-  color: #ffffff; 
-  transform: translateY(-2px); 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+.carbonex-nav button,
+.carbonex-nav .auth-btn,
+.carbonex-nav .profile-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem 1.2rem;
+  border-radius: 2rem;
+  transition: background 0.2s, color 0.2s;
 }
 
-.profile-actions, .auth-links {
-  display: flex; 
-  gap: 15px; 
+.carbonex-nav button:hover,
+.carbonex-nav .auth-btn:hover,
+.carbonex-nav .profile-btn:hover {
+  background: #a3c93a;
+  color: #fff;
 }
 
-.profile-btn, .auth-btn {
-  background: linear-gradient(90deg, #e2b70c, #df760d); 
-  border: none; 
-  color: #ffffff; 
-  font-size: 14px; 
-  padding: 10px 20px; 
-  border-radius: 8px; 
-  cursor: pointer; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-  transition: all 0.3s ease; 
+.carbonex-hero {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  padding: 3rem 4rem 0 4rem;
+  min-height: 80vh;
 }
 
-.profile-btn:hover, .auth-btn:hover {
-  background: #388e3c; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+.hero-left {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
 }
 
-/* --- Responsive Design for Header --- */
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column; 
-    align-items: flex-start; 
-    padding: 15px; 
+.hero-subtitle {
+  color: #a3c93a;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+.cta-btn {
+  background: #a3c93a;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 1rem 2.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(163,201,58,0.15);
+  transition: background 0.2s;
+}
+
+.cta-btn:hover {
+  background: #8bb02e;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.stat-num {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #a3c93a;
+  display: block;
+}
+
+.stat-label {
+  font-size: 1rem;
+  color: #888;
+  display: block;
+  margin-top: 0.2rem;
+}
+
+.hero-right {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.hero-illustration {
+  width: 100%;
+  max-width: 500px;
+  object-fit: contain;
+  border-radius: 0 0 0 120px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+.price-chart-section {
+  padding: 2rem 4rem;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 320px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -2px 0 16px rgba(0,0,0,0.08);
+  z-index: 20;
+  transition: right 0.3s;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem 1rem 1.5rem;
+}
+
+.sidebar.open {
+  right: 0;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #888;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  border: 2px solid #a3c93a;
+}
+
+.username {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+.user-role {
+  font-size: 1rem;
+  color: #888;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.nav-links button {
+  background: #f8f6f3;
+  border: none;
+  color: #333;
+  font-size: 1rem;
+  padding: 0.7rem 1rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-links button:hover,
+.logout-btn:hover {
+  background: #a3c93a;
+  color: #fff;
+}
+
+.logout-btn {
+  background: #ffeaea;
+  color: #d9534f;
+  font-weight: bold;
+}
+
+.schedules-list h4 {
+  margin-bottom: 0.5rem;
+  color: #a3c93a;
+}
+
+.schedules-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.schedules-list li {
+  background: #f4f8ec;
+  border-radius: 0.5rem;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.97rem;
+}
+
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 1.2rem;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+  min-width: 320px;
+  position: relative;
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  font-size: 1rem;
+  padding: 2rem 0 1rem 0;
+  margin-top: auto;
+  background: transparent;
+}
+
+@media (max-width: 1100px) {
+  .carbonex-header,
+  .carbonex-hero,
+  .price-chart-section {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
+}
 
-  .nav-options {
-    justify-content: flex-start; 
-    gap: 15px; 
-    flex-wrap: wrap; 
-    margin-top: 10px; /* Add some space if header stacks */
+@media (max-width: 900px) {
+  .carbonex-hero {
+    flex-direction: column;
+    padding: 2rem;
   }
-
-  .nav-options button {
-    font-size: 14px; 
-    padding: 8px 12px; 
-  }
-  .profile-actions, .auth-links {
-    margin-top: 10px; /* Add some space if header stacks */
+  .hero-right {
+    justify-content: center;
+    margin-top: 2rem;
   }
 }
 
-@media (max-width: 480px) {
-  .header {
-    padding: 15px; 
+@media (max-width: 700px) {
+  .carbonex-header,
+  .carbonex-hero,
+  .price-chart-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
-
-  .nav-options {
-    flex-direction: column; 
-    align-items: flex-start; 
-    gap: 10px; 
+  .hero-title {
+    font-size: 2.2rem;
   }
-
-  .nav-options button {
-    width: 100%; 
-    text-align: center; 
+  .sidebar {
+    width: 100vw;
+    right: -100vw;
+    padding: 1.2rem 0.7rem;
   }
-
-  .profile-btn, .auth-btn {
-    width: 100%; 
-    text-align: center; 
+  .sidebar.open {
+    right: 0;
   }
 }
