@@ -1,48 +1,90 @@
+/* ==== Global Reset & Base ==== */
+* {
+  box-sizing: border-box;
+}
+
 body, html {
   margin: 0;
   padding: 0;
   font-family: 'Montserrat', Arial, sans-serif;
   background: #f8f6f3;
+  width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
 }
 
-.carbonex-home {
+img, video, canvas {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ==== Fluid Typography ==== */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 900px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* ==== Main Container ==== */
+.home-container {
   min-height: 100vh;
   background: #e0e2da;
   display: flex;
   flex-direction: column;
 }
 
-.carbonex-header {
+/* ==== Header and Nav ==== */
+.header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   padding: 1rem 1rem;
-  display: flex;                  /* Add Flex */
-  align-items: center;           /* Vertically center items */
-  justify-content: space-between;/* Logo on left, nav on right */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
-.carbonex-logo {
+.logo {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
   letter-spacing: 2px;
   color: #333;
   cursor: pointer;
 }
 
-.carbonex-nav {
+.nav {
   display: flex;
   gap: 1.5rem;
   align-items: center;
 }
 
-.carbonex-nav button,
-.carbonex-nav .auth-btn,
-.carbonex-nav .profile-btn {
+.nav button,
+.auth-btn,
+.profile-btn {
   background: none;
   border: none;
   color: #333;
@@ -51,59 +93,24 @@ body, html {
   cursor: pointer;
   padding: 0.5rem 1.2rem;
   border-radius: 2rem;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.carbonex-nav button:hover,
-.carbonex-nav .auth-btn:hover,
-.carbonex-nav .profile-btn:hover {
+.nav button:hover,
+.auth-btn:hover,
+.profile-btn:hover {
   background: #a3c93a;
   color: #fff;
 }
 
-.carbonex-hero {
+/* ==== Hero Section ==== */
+.hero {
   display: flex;
   align-items: stretch;
   justify-content: space-between;
   padding: 3rem 4rem 0 4rem;
   min-height: 80vh;
-}
-
-/* Full-screen overlay */
-.pickup-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 2000;               /* Above header/sidebar */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Modal inner container */
-.pickup-modal-content {
-  background: #fff;
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-radius: 8px;
-  padding: 2rem;
-  position: relative;
-}
-
-/* Close button */
-.pickup-modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+  margin-top: 70px; /* Space for fixed header */
 }
 
 .hero-left {
@@ -120,6 +127,7 @@ body, html {
   letter-spacing: 2px;
   margin-bottom: 1rem;
   font-size: 1.1rem;
+  text-transform: uppercase;
 }
 
 .hero-title {
@@ -143,12 +151,12 @@ body, html {
   border: none;
   border-radius: 2rem;
   padding: 1rem 2.5rem;
-  font-weight: bold;
+  font-weight: 700;
   font-size: 1.1rem;
   margin-bottom: 2.5rem;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(163,201,58,0.15);
-  transition: background 0.2s;
+  transition: background 0.2s ease;
 }
 
 .cta-btn:hover {
@@ -163,7 +171,7 @@ body, html {
 
 .stat-num {
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 700;
   color: #a3c93a;
   display: block;
 }
@@ -191,10 +199,47 @@ body, html {
   box-shadow: 0 8px 32px rgba(0,0,0,0.08);
 }
 
+/* ==== Price Chart Section ==== */
 .price-chart-section {
   padding: 2rem 4rem;
 }
 
+/* ==== Pickup Modal ==== */
+.pickup-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pickup-modal-content {
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 2rem;
+  position: relative;
+}
+
+.pickup-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* ==== Sidebar ==== */
 .sidebar-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -211,7 +256,7 @@ body, html {
   background: #fff;
   box-shadow: -2px 0 16px rgba(0,0,0,0.08);
   z-index: 20;
-  transition: right 0.3s;
+  transition: right 0.3s ease;
   display: flex;
   flex-direction: column;
   padding: 2rem 1.5rem 1rem 1.5rem;
@@ -248,7 +293,7 @@ body, html {
 
 .username {
   font-size: 1.3rem;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 0.2rem;
 }
 
@@ -272,7 +317,7 @@ body, html {
   padding: 0.7rem 1rem;
   border-radius: 1.5rem;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .nav-links button:hover,
@@ -284,9 +329,10 @@ body, html {
 .logout-btn {
   background: #ffeaea;
   color: #d9534f;
-  font-weight: bold;
+  font-weight: 700;
 }
 
+/* ==== Schedules List ==== */
 .schedules-list h4 {
   margin-bottom: 0.5rem;
   color: #a3c93a;
@@ -306,25 +352,37 @@ body, html {
   font-size: 0.97rem;
 }
 
+/* ==== Login / Signup Modal ==== */
 .modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.25);
-  z-index: 100;
+  background: rgba(0,0,0,0.4);
+  z-index: 2000;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background: #fff;
-  border-radius: 1.2rem;
-  padding: 2rem 2.5rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.13);
-  min-width: 320px;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
   position: relative;
 }
 
+.modal-content .close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* ==== Footer ==== */
 footer {
   text-align: center;
   color: #888;
@@ -334,42 +392,67 @@ footer {
   background: transparent;
 }
 
+/* ==== Responsive Breakpoints ==== */
 @media (max-width: 1100px) {
-  .carbonex-header,
-  .carbonex-hero,
+  .header,
+  .hero,
   .price-chart-section {
     padding-left: 2rem;
     padding-right: 2rem;
   }
-}
-
-@media (max-width: 900px) {
-  .carbonex-hero {
+  .hero {
     flex-direction: column;
-    padding: 2rem;
+    padding-top: 90px;
   }
   .hero-right {
     justify-content: center;
     margin-top: 2rem;
   }
+  .hero-title {
+    font-size: 2.6rem;
+  }
 }
 
 @media (max-width: 700px) {
-  .carbonex-header,
-  .carbonex-hero,
-  .price-chart-section {
-    padding-left: 1rem;
-    padding-right: 1rem;
+  .nav {
+    gap: 1rem;
   }
   .hero-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
+  }
+  .hero-desc {
+    max-width: 100%;
+  }
+  .hero-stats {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .hero-left {
+    align-items: center;
+    text-align: center;
+  }
+  .cta-btn {
+    width: 100%;
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .sidebar {
     width: 100vw;
-    right: -100vw;
-    padding: 1.2rem 0.7rem;
   }
-  .sidebar.open {
-    right: 0;
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.75rem 1rem;
+  }
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  .hero-desc {
+    font-size: 1rem;
   }
 }

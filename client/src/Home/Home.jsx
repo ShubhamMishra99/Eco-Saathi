@@ -3,7 +3,7 @@ import Login from './Auth/Login';
 import Signup from './Auth/Signup';
 import PriceChart from './PriceChart/PriceChart';
 import About from './About/About';
-import PickupSchedule from './PickupSchedule/PickupSchedule'; // Adjust relative path
+import PickupSchedule from './PickupSchedule/PickupSchedule';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
 
@@ -12,7 +12,6 @@ function Home() {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [showPriceChart, setShowPriceChart] = useState(false);
   const [schedules, setSchedules] = useState([]);
   const [showPickupModal, setShowPickupModal] = useState(false);
   const navigate = useNavigate();
@@ -35,18 +34,12 @@ function Home() {
 
   const handleNavButtonClick = (targetId) => {
     if (targetId === 'price-chart-section') {
-      setShowPriceChart((prev) => {
-        const next = !prev;
-        setTimeout(() => {
-          const el = document.getElementById('price-chart-section');
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
-          }
-        }, 50);
-        return next;
-      });
+      const el = document.getElementById('price-chart-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     } else if (targetId === 'pickup-schedule') {
-      setShowPickupModal(true); // ← updated to show modal instead of navigate
+      setShowPickupModal(true);
     } else {
       const element = document.getElementById(targetId);
       if (element) {
@@ -60,7 +53,10 @@ function Home() {
   const handleHomeClick = () => {
     navigate('/');
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    setShowPriceChart(false);
+    setSidebarOpen(false);
+    setShowLogin(false);
+    setShowSignup(false);
+    setShowPickupModal(false);
   };
 
   const handleProfileClick = () => {
@@ -82,44 +78,56 @@ function Home() {
     setSidebarOpen(false);
     setIsLoggedIn(false);
   };
+  const openLogin = () => {
+  setShowLogin(true);
+  setShowSignup(false);
+};
+
+const openSignup = () => {
+  setShowSignup(true);
+  setShowLogin(false);
+};
+
 
   const avatarUrl =
     storedUser?.avatar ||
     'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
 
   return (
-    <div className="carbonex-home">
+    <div className="home-container">
       {/* Navigation */}
-      <header className="carbonex-header">
-        <div className="carbonex-logo" onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
+      <header className="header">
+        <div className="logo" onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
           ECO SAATHI
         </div>
-        <nav className="carbonex-nav">
+        <nav className="nav">
           <button onClick={handleHomeClick}>Home</button>
           <button onClick={() => handleNavButtonClick('about-section')}>About</button>
           <button onClick={() => handleNavButtonClick('price-chart-section')}>Price Chart</button>
-          <button onClick={() => handleNavButtonClick('pickup-schedule')}>Pickup Schedule</button>
           <button onClick={() => alert('Real-time Tracking clicked')}>Real-time Tracking</button>
           {isLoggedIn ? (
             <button className="profile-btn" onClick={handleProfileClick}>Profile</button>
           ) : (
             <>
-              <button className="auth-btn" onClick={() => setShowLogin(true)}>Login</button>
-              <button className="auth-btn" onClick={() => setShowSignup(true)}>Signup</button>
+              <button className="auth-btn" onClick={openLogin}>Login</button>
+              <button className="auth-btn" onClick={openSignup}>Signup</button>
+
             </>
           )}
         </nav>
       </header>
 
       {/* Hero Section */}
-      <section className="carbonex-hero">
+      <section className="hero">
         <div className="hero-left">
           <h4 className="hero-subtitle">WE ARE</h4>
           <h1 className="hero-title">SOLVING <br /> GLOBAL <br /> PROBLEMS</h1>
           <p className="hero-desc">
             EcoSaathi makes a track to environmental solutions with a positive impact on climate changes. Join the community, building a balance of business and society with safe nature and better future for our planet.
           </p>
-          <button className="cta-btn">SCHEDULE A CONSULTATION</button>
+          <button className="cta-btn" onClick={() => setShowPickupModal(true)}>
+            SCHEDULE A PICKUP
+          </button>
           <div className="hero-stats">
             <div>
               <span className="stat-num">5.7</span>
@@ -145,12 +153,10 @@ function Home() {
         <About />
       </section>
 
-      {/* Price Chart Section */}
-      {showPriceChart && (
-        <section id="price-chart-section" className="price-chart-section">
-          <PriceChart />
-        </section>
-      )}
+      {/* Price Chart Section - ALWAYS RENDERED */}
+      <section id="price-chart-section" className="price-chart-section">
+        <PriceChart />
+      </section>
 
       {/* Sidebar Overlay */}
       {sidebarOpen && (
@@ -215,7 +221,7 @@ function Home() {
         </div>
       )}
 
-      {/* Pickup Schedule Fullscreen Modal */}
+      {/* Pickup Modal */}
       {showPickupModal && (
         <div className="pickup-modal-overlay">
           <div className="pickup-modal-content">
