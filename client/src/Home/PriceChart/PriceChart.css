@@ -1,114 +1,149 @@
-/* src/styles/PriceChart/PriceChart.css */
-
 .price-chart-container {
-  padding: 20px 15px; /* Adjusted padding */
+  padding: 40px 40px;
   text-align: center;
-  background-color: #f0f4f0; /* Light greenish-grey background for the section */
-  margin-top: 20px;
+  background-color: #f8f6f3; /* Match home background */
+  margin-top: 40px;
+  border-radius: 18px;
+  box-shadow: 0 6px 24px rgba(163, 201, 58, 0.10); /* Subtle green shadow */
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .price-chart-title {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 30px;
-  font-weight: bold;
+  font-size: 2.2rem;
+  color: #a3c93a; /* Match home accent green */
+  margin-bottom: 36px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-family: 'Montserrat', Arial, sans-serif;
 }
 
 .price-chart-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Responsive grid */
-  gap: 20px; /* Spacing between cards */
-  justify-content: center; /* Center grid items if they don't fill the row */
-  max-width: 1200px; /* Max width for the grid container */
-  margin: 0 auto; /* Center the grid container */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .price-card {
-  background-color: #ffffff;
-  border-radius: 12px; /* More rounded corners */
-  padding: 20px;
+  background-color: #fff;
+  border-radius: 18px;
+  padding: 32px 24px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(163, 201, 58, 0.10);
+  transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribute space for consistent card height feel */
-  min-height: 220px; /* Minimum height for cards */
+  justify-content: space-between;
+  min-height: 220px;
+  border: 2px solid #e3efc7;
 }
 
 .price-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: scale(1.04);
+  box-shadow: 0 8px 32px rgba(163, 201, 58, 0.18);
+  border-color: #a3c93a;
 }
 
 .price-card-icon {
-  font-size: 48px; /* Larger icon size */
-  margin-bottom: 12px;
-  color: #4caf50; /* Green color for icons */
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: #a3c93a; /* Match home accent green */
+  background: #f4f8ec;
+  border-radius: 50%;
+  padding: 12px;
+  border: 2px solid #a3c93a;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .price-card-price {
-  font-size: 18px;
+  font-size: 1.15rem;
   font-weight: bold;
   color: #333;
-  margin-bottom: 8px;
-  background-color: #e8f5e9; /* Light green background for price */
-  padding: 4px 8px;
-  border-radius: 4px;
-  display: inline-block; /* To make background fit content */
+  margin-bottom: 10px;
+  background-color: #e3efc7; /* Light green background for price */
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-block;
 }
 
 .price-card-name {
-  font-size: 16px; 
-  color: #555;
-  font-weight: 600; 
+  font-size: 1.08rem;
+  color: #8bb02e; /* Slightly darker green */
+  font-weight: 700;
   margin-bottom: 10px;
-  flex-grow: 1; 
+  font-family: 'Montserrat', Arial, sans-serif;
+  flex-grow: 1;
 }
 
 .price-card-notes {
-  font-size: 12px;
-  color: #777;
-  line-height: 1.4;
+  font-size: 0.98rem;
+  color: #555;
+  line-height: 1.5;
 }
 
 .price-card-notes strong {
-  color: #d9534f; /* Reddish color for important notes */
+  color: #d9534f;
   font-weight: bold;
 }
 
 /* Responsive adjustments for the price chart grid */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .price-chart-container {
+    padding: 30px 10px;
+  }
   .price-chart-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 15px;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
   .price-card {
-    padding: 15px;
-    min-height: 200px;
+    padding: 18px 10px;
+    min-height: 180px;
   }
   .price-card-icon {
-    font-size: 40px;
-  }
-  .price-card-price {
-    font-size: 16px;
-  }
-  .price-card-name {
-    font-size: 14px;
-  }
-  .price-card-notes {
-    font-size: 11px;
+    font-size: 38px;
+    width: 54px;
+    height: 54px;
+    padding: 8px;
   }
 }
 
-@media (max-width: 480px) {
-  .price-chart-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+@media (max-width: 600px) {
+  .price-chart-container {
+    padding: 18px 4px;
+    margin-top: 20px;
   }
-   .price-chart-container {
-    padding: 15px 10px;
+  .price-chart-title {
+    font-size: 1.3rem;
+    margin-bottom: 18px;
   }
   .price-card {
-    min-height: auto; /* Let height be auto on smallest screens if needed */
+    min-height: auto;
+    padding: 12px 4px;
+  }
+  .price-card-icon {
+    font-size: 28px;
+    width: 38px;
+    height: 38px;
+    padding: 4px;
+  }
+  .price-card-price {
+    font-size: 0.98rem;
+    padding: 4px 8px;
+  }
+  .price-card-name {
+    font-size: 0.98rem;
+  }
+  .price-card-notes {
+    font-size: 0.85rem;
   }
 }

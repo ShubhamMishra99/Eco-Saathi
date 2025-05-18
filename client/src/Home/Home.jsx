@@ -6,6 +6,7 @@ import About from './About/About';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
 
+// ...existing imports...
 function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -22,7 +23,6 @@ function Home() {
     setSchedules(stored);
   }, []);
 
-  // Refresh schedules after adding new one
   useEffect(() => {
     const handleStorageChange = () => {
       const stored = JSON.parse(localStorage.getItem('schedules')) || [];
@@ -34,7 +34,16 @@ function Home() {
 
   const handleNavButtonClick = (targetId) => {
     if (targetId === 'price-chart-section') {
-      setShowPriceChart((prev) => !prev);
+      setShowPriceChart((prev) => {
+        const next = !prev;
+        setTimeout(() => {
+          const el = document.getElementById('price-chart-section');
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 50);
+        return next;
+      });
     } else if (targetId === 'pickup-schedule') {
       navigate('/pickup-schedule');
     } else {
@@ -62,7 +71,6 @@ function Home() {
     }
   };
 
-  // Sidebar logic
   const currentPhone = localStorage.getItem('currentUser');
   const storedUser = JSON.parse(localStorage.getItem('user'));
 
@@ -79,43 +87,76 @@ function Home() {
     'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
 
   return (
-    <div className="home">
-      <header className="header">
-        <h1 className="logo" onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
-          ♻️ EcoSaathi
-        </h1>
-
-        <nav className="nav-options">
+    <div className="carbonex-home">
+      {/* Navigation */}
+      <header className="carbonex-header">
+        <div className="carbonex-logo" onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
+          ECO SAATHI
+        </div>
+        <nav className="carbonex-nav">
           <button onClick={handleHomeClick}>Home</button>
           <button onClick={() => handleNavButtonClick('about-section')}>About</button>
           <button onClick={() => handleNavButtonClick('price-chart-section')}>Price Chart</button>
           <button onClick={() => handleNavButtonClick('pickup-schedule')}>Pickup Schedule</button>
           <button onClick={() => alert('Real-time Tracking clicked')}>Real-time Tracking</button>
-        </nav>
-
-        {isLoggedIn ? (
-          <div className="profile-actions">
+          {isLoggedIn ? (
             <button className="profile-btn" onClick={handleProfileClick}>Profile</button>
-          </div>
-        ) : (
-          <div className="auth-links">
-            <button className="auth-btn" onClick={() => setShowLogin(true)}>Login</button>
-            <button className="auth-btn" onClick={() => setShowSignup(true)}>Signup</button>
-          </div>
-        )}
+          ) : (
+            <>
+              <button className="auth-btn" onClick={() => setShowLogin(true)}>Login</button>
+              <button className="auth-btn" onClick={() => setShowSignup(true)}>Signup</button>
+            </>
+          )}
+        </nav>
       </header>
 
-      <main>
-        {/* About Section */}
-        <About />
+      {/* Hero Section */}
+      <section className="carbonex-hero">
+        <div className="hero-left">
+          <h4 className="hero-subtitle">WE ARE</h4>
+          <h1 className="hero-title">
+            SOLVING <br /> GLOBAL <br /> PROBLEMS
+          </h1>
+          <p className="hero-desc">
+            EcoSaathi makes a track to environmental solutions with a positive impact on climate changes. Join the community, building a balance of business and society with safe nature and better future for our planet.
+          </p>
+          <button className="cta-btn">SCHEDULE A CONSULTATION</button>
+          <div className="hero-stats">
+            <div>
+              <span className="stat-num">5.7</span>
+              <span className="stat-label">CO<sub>2</sub> Tons Prevented</span>
+            </div>
+            <div>
+              <span className="stat-num">68</span>
+              <span className="stat-label">Products Footprinted</span>
+            </div>
+            <div>
+              <span className="stat-num">13</span>
+              <span className="stat-label">Active Projects</span>
+            </div>
+          </div>
+        </div>
+        <div className="hero-right">
+          {/* Replace with your SVG or illustration */}
+          <img
+            src="/assets/eco-illustration.svg"
+            alt="EcoSaathi Illustration"
+            className="hero-illustration"
+          />
+        </div>
+      </section>
 
-        {/* Price Chart Section (only show when button clicked) */}
-        {showPriceChart && (
-          <section id="price-chart-section" className="price-chart-section">
-            <PriceChart />
-          </section>
-        )}
-      </main>
+      {/* About Section */}
+      <section id="about-section">
+        <About />
+      </section>
+
+      {/* Price Chart Section (only show when button clicked) */}
+      {showPriceChart && (
+        <section id="price-chart-section" className="price-chart-section">
+          <PriceChart />
+        </section>
+      )}
 
       {/* Sidebar overlay */}
       {sidebarOpen && (
