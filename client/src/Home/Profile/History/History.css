@@ -89,44 +89,45 @@
 
 .history-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2.5rem;
-  padding: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  padding: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 .history-card {
-  background: #fafbfa;
-  border-radius: 18px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
   overflow: hidden;
-  border: none;
-  margin: 0.5rem;
+  border: 1px solid rgba(0,0,0,0.05);
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .history-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
 }
 
 .history-card .history-header {
-  padding: 1.2rem 1.5rem;
-  background: #e9eae3;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 1.5rem;
+  background: linear-gradient(to right, #f8f9fa, #ffffff);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0;
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
 }
 
-.history-card .history-header h3, .history-card .history-header h2, .history-card .history-header h1 {
+.history-card .history-header h3 {
   margin: 0;
-  color: #222;
-  font-size: 1.35rem;
+  color: #2c3e50;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: 0.3px;
 }
@@ -146,8 +147,8 @@
 }
 
 .history-details {
-  padding: 2.5rem 1.5rem 2rem 1.5rem;
-  background: #fafbfa;
+  padding: 2rem;
+  background: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -155,16 +156,21 @@
 }
 
 .detail-row {
-  margin-bottom: 1.5rem;
-  color: #333;
-  font-size: 1.15rem;
-  padding: 0.2rem 0;
+  margin-bottom: 1.2rem;
+  color: #34495e;
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
   width: 100%;
+  display: flex;
   justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  text-align: center;
 }
 
 .detail-row:last-child {
   margin-bottom: 0;
+  border-bottom: none;
 }
 
 /* Action buttons row */
@@ -172,24 +178,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1.2rem;
-  padding: 1.2rem 0 1.2rem 0;
-  background: #f8f8f8;
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
-  border-top: 1px solid #f0f0f0;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-top: 1px solid rgba(0,0,0,0.05);
 }
 
 .history-action-btn {
   border: none;
   outline: none;
-  border-radius: 2rem;
-  padding: 0.7rem 2.2rem;
-  font-size: 1.1rem;
+  border-radius: 8px;
+  padding: 0.8rem 1.8rem;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  margin: 0;
+  transition: all 0.2s ease;
 }
 
 .history-action-btn.edit {
@@ -234,8 +237,9 @@
   }
 
   .history-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
   }
 
   .chart-container {
@@ -267,12 +271,21 @@
     text-align: center;
   }
 
+  .history-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
   .history-card {
-    margin: 0.3rem;
+    margin: 0;
   }
 
   .history-details {
     padding: 1.5rem;
+  }
+
+  .detail-row {
+    font-size: 1rem;
   }
 }
 
@@ -289,30 +302,30 @@
     font-size: 1rem;
   }
 
+  .history-grid {
+    padding: 0.8rem;
+  }
+
   .history-card {
-    border-radius: 12px;
+    border-radius: 16px;
   }
 
   .history-card .history-header {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    padding: 1rem 0.7rem;
+    padding: 1.2rem;
   }
 
   .history-details {
-    padding: 1.2rem 0.5rem 1rem 0.5rem;
+    padding: 1.2rem;
   }
 
   .history-actions {
-    gap: 0.5rem;
-    padding: 0.7rem 0 0.7rem 0;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    padding: 1rem;
+    flex-wrap: wrap;
   }
 
   .history-action-btn {
-    padding: 0.6rem 1.1rem;
-    font-size: 1rem;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.95rem;
   }
 }
 
