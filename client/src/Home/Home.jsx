@@ -6,8 +6,9 @@ import About from './About/About';
 import PickupSchedule from './PickupSchedule/PickupSchedule';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
+import HomeImage from '../assets/HomeImage.png';
 
-function Home() {
+const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
@@ -17,16 +18,13 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const status = localStorage.getItem('isLoggedIn');
-    setIsLoggedIn(status === 'true');
-    const stored = JSON.parse(localStorage.getItem('schedules')) || [];
-    setSchedules(stored);
+    setIsLoggedIn(localStorage.getItem('isLoggedIn') === 'true');
+    setSchedules(JSON.parse(localStorage.getItem('schedules')) || []);
   }, []);
 
   useEffect(() => {
     const handleStorageChange = () => {
-      const stored = JSON.parse(localStorage.getItem('schedules')) || [];
-      setSchedules(stored);
+      setSchedules(JSON.parse(localStorage.getItem('schedules')) || []);
     };
     window.addEventListener('storage', handleStorageChange);
     return () => window.removeEventListener('storage', handleStorageChange);
@@ -34,19 +32,13 @@ function Home() {
 
   const handleNavButtonClick = (targetId) => {
     if (targetId === 'price-chart-section') {
-      const el = document.getElementById('price-chart-section');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
+      document.getElementById('price-chart-section')?.scrollIntoView({ behavior: 'smooth' });
     } else if (targetId === 'pickup-schedule') {
       setShowPickupModal(true);
     } else {
       const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      } else {
+      element?.scrollIntoView({ behavior: 'smooth' }) || 
         alert(`${targetId.replace('-', ' ')} section not found or page not implemented.`);
-      }
     }
   };
 
@@ -60,16 +52,10 @@ function Home() {
   };
 
   const handleProfileClick = () => {
-    const currentUser = localStorage.getItem('currentUser');
-    if (currentUser) {
-      setSidebarOpen(true);
-    } else {
-      alert('Please log in to access your profile.');
-    }
+    localStorage.getItem('currentUser') 
+      ? setSidebarOpen(true)
+      : alert('Please log in to access your profile.');
   };
-
-  const currentPhone = localStorage.getItem('currentUser');
-  const storedUser = JSON.parse(localStorage.getItem('user'));
 
   const handleLogout = () => {
     localStorage.setItem('isLoggedIn', 'false');
@@ -78,24 +64,13 @@ function Home() {
     setSidebarOpen(false);
     setIsLoggedIn(false);
   };
-  const openLogin = () => {
-  setShowLogin(true);
-  setShowSignup(false);
-};
 
-const openSignup = () => {
-  setShowSignup(true);
-  setShowLogin(false);
-};
-
-
-  const avatarUrl =
-    storedUser?.avatar ||
-    'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
+  const currentPhone = localStorage.getItem('currentUser');
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const avatarUrl = storedUser?.avatar || 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=';
 
   return (
     <div className="home-container">
-      {/* Navigation */}
       <header className="header">
         <div className="logo" onClick={handleHomeClick} style={{ cursor: 'pointer' }}>
           ECO SAATHI
@@ -109,15 +84,13 @@ const openSignup = () => {
             <button className="profile-btn" onClick={handleProfileClick}>Profile</button>
           ) : (
             <>
-              <button className="auth-btn" onClick={openLogin}>Login</button>
-              <button className="auth-btn" onClick={openSignup}>Signup</button>
-
+              <button className="auth-btn" onClick={() => setShowLogin(true)}>Login</button>
+              <button className="auth-btn" onClick={() => setShowSignup(true)}>Signup</button>
             </>
           )}
         </nav>
       </header>
 
-      {/* Hero Section */}
       <section className="hero">
         <div className="hero-left">
           <h4 className="hero-subtitle">WE ARE</h4>
@@ -144,26 +117,22 @@ const openSignup = () => {
           </div>
         </div>
         <div className="hero-right">
-          <img src="client/public/eco-illustration.svg" alt="EcoSaathi Illustration" className="hero-illustration" />
+          <img src={HomeImage} alt="EcoSaathi Illustration" className="hero-illustration" />
         </div>
       </section>
 
-      {/* About Section */}
       <section id="about-section">
         <About />
       </section>
 
-      {/* Price Chart Section - ALWAYS RENDERED */}
       <section id="price-chart-section" className="price-chart-section">
         <PriceChart />
       </section>
 
-      {/* Sidebar Overlay */}
       {sidebarOpen && (
         <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
       )}
 
-      {/* Sidebar */}
       <aside className={`sidebar${sidebarOpen ? ' open' : ''}`}>
         <button className="close-btn" onClick={() => setSidebarOpen(false)}>×</button>
         <div className="profile-info">
@@ -172,30 +141,13 @@ const openSignup = () => {
           <p className="user-role">{storedUser?.phone === currentPhone ? storedUser.phone : 'No phone found'}</p>
         </div>
         <nav className="nav-links">
-          <button onClick={() => alert('Rewards clicked')}>🎁 Rewards</button>
-          <button onClick={() => alert('History clicked')}>📜 History</button>
-          <button onClick={() => navigate('/Schedules')}>📅 Schedules</button>
+          <button onClick={() => navigate('/rewards')}>🎁 Rewards</button>
+          <button onClick={() => navigate('/history')}>📜 History</button>
+          <button onClick={() => navigate('/schedules')}>📅 Schedules</button>
           <button className="logout-btn" onClick={handleLogout}>🚪 Logout</button>
         </nav>
-
-        {/* Show saved schedules */}
-        {schedules.length > 0 && (
-          <div className="schedules-list" style={{ padding: '1rem' }}>
-            <h4>My Schedules</h4>
-            <ul>
-              {schedules.map((s, i) => (
-                <li key={i} style={{ marginBottom: 8 }}>
-                  <strong>{s.day ? `${s.day}, ` : ''}{s.date} {s.time}</strong><br />
-                  {s.address}<br />
-                  <em>{s.description}</em>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </aside>
 
-      {/* Login Modal */}
       {showLogin && (
         <div className="modal">
           <div className="modal-content">
@@ -208,7 +160,6 @@ const openSignup = () => {
         </div>
       )}
 
-      {/* Signup Modal */}
       {showSignup && (
         <div className="modal">
           <div className="modal-content">
@@ -221,7 +172,6 @@ const openSignup = () => {
         </div>
       )}
 
-      {/* Pickup Modal */}
       {showPickupModal && (
         <div className="pickup-modal-overlay">
           <div className="pickup-modal-content">
@@ -231,12 +181,11 @@ const openSignup = () => {
         </div>
       )}
 
-      {/* Footer */}
       <footer>
         © {new Date().getFullYear()} EcoSaathi. All rights reserved.
       </footer>
     </div>
   );
-}
+};
 
 export default Home;

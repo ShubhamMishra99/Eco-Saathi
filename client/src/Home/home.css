@@ -106,11 +106,13 @@ html {
 /* ==== Hero Section ==== */
 .hero {
   display: flex;
+  flex-direction: row;
   align-items: stretch;
   justify-content: space-between;
   padding: 3rem 4rem 0 4rem;
   min-height: 80vh;
-  margin-top: 70px; /* Space for fixed header */
+  margin-top: 70px;
+  background: none;
 }
 
 .hero-left {
@@ -118,6 +120,11 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background: #fff;
+  border-top-right-radius: 200px 120px;
+  border-bottom-right-radius: 200px 120px;
+  padding: 3rem 2.5rem 3rem 3rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.04);
   z-index: 2;
 }
 
