@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Login({ onSuccess }) {
+const Login = ({ onSuccess }) => {
   const [mode, setMode] = useState('password');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +10,6 @@ function Login({ onSuccess }) {
 
   const handlePasswordLogin = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
@@ -58,31 +57,79 @@ function Login({ onSuccess }) {
     }
   };
 
+  const switchToOtp = () => setMode('otp');
+  const switchToPassword = () => {
+    setMode('password');
+    setOtpSent(false);
+    setOtpInput('');
+  };
+
   return (
     <div className="auth-container">
       <h2>Login</h2>
 
-      {mode === 'password' && (
+      {mode === 'password' ? (
         <form onSubmit={handlePasswordLogin}>
-          <input type="tel" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} required />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input 
+            type="tel" 
+            placeholder="Phone" 
+            value={phone} 
+            onChange={(e) => setPhone(e.target.value)} 
+            required 
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+          />
           <button type="submit">Login</button>
-          <p>Use OTP? <span onClick={() => setMode('otp')} style={{ cursor: 'pointer', color: '#007f5f' }}>Login with OTP</span></p>
+          <p>
+            Use OTP? 
+            <span 
+              onClick={switchToOtp} 
+              style={{ cursor: 'pointer', color: '#007f5f' }}
+            >
+              Login with OTP
+            </span>
+          </p>
         </form>
-      )}
-
-      {mode === 'otp' && (
+      ) : (
         <form onSubmit={otpSent ? handleVerifyOtp : handleSendOtp}>
-          <input type="tel" placeholder="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} disabled={otpSent} required />
+          <input 
+            type="tel" 
+            placeholder="Phone" 
+            value={phone} 
+            onChange={(e) => setPhone(e.target.value)} 
+            disabled={otpSent} 
+            required 
+          />
           {otpSent && (
-            <input type="text" placeholder="Enter OTP" value={otpInput} onChange={(e) => setOtpInput(e.target.value)} required />
+            <input 
+              type="text" 
+              placeholder="Enter OTP" 
+              value={otpInput} 
+              onChange={(e) => setOtpInput(e.target.value)} 
+              required 
+            />
           )}
-          <button type="submit">{otpSent ? 'Verify OTP' : 'Send OTP'}</button>
-          <p>Use Password? <span onClick={() => { setMode('password'); setOtpSent(false); setOtpInput(''); }} style={{ cursor: 'pointer', color: '#007f5f' }}>Login with Password</span></p>
+          <button type="submit">
+            {otpSent ? 'Verify OTP' : 'Send OTP'}
+          </button>
+          <p>
+            Use Password? 
+            <span 
+              onClick={switchToPassword} 
+              style={{ cursor: 'pointer', color: '#007f5f' }}
+            >
+              Login with Password
+            </span>
+          </p>
         </form>
       )}
     </div>
   );
-}
+};
 
 export default Login;

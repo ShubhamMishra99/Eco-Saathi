@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import './PickupSchedule.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const PickupSchedule = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isEditMode = location.state?.mode === 'edit';
+  const pickupData = location.state?.pickupData;
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [time, setTime] = useState('');
   const [address, setAddress] = useState('');
@@ -11,11 +17,63 @@ const PickupSchedule = () => {
   const [remarks, setRemarks] = useState('');
   const [showTimeModal, setShowTimeModal] = useState(false);
 
+  useEffect(() => {
+    if (isEditMode && pickupData) {
+      setSelectedDate(new Date(pickupData.date));
+      setTime(pickupData.time);
+      setAddress(pickupData.address);
+      setWeight(pickupData.weight);
+      setRemarks(pickupData.remarks || '');
+    }
+  }, [isEditMode, pickupData]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!selectedDate) return alert('Please select a date first!');
-    console.log({ selectedDate, time, address, weight, remarks });
-    // handle API call or state update
+    
+    // Validate required fields
+    if (!selectedDate || !time || !address || !weight) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Create pickup data object
+    const pickupData = {
+      id: isEditMode ? location.state.pickupData.id : Date.now(),
+      date: selectedDate.toLocaleDateString(),
+      time,
+      address,
+      weight,
+      remarks,
+      status: isEditMode ? location.state.pickupData.status : 'Pending',
+      createdAt: isEditMode ? location.state.pickupData.createdAt : new Date().toISOString()
+    };
+
+    // Get existing pickups from localStorage
+    const existingPickups = JSON.parse(localStorage.getItem('pickups') || '[]');
+    
+    let updatedPickups;
+    if (isEditMode) {
+      // Update existing pickup
+      updatedPickups = existingPickups.map(pickup => 
+        pickup.id === pickupData.id ? pickupData : pickup
+      );
+    } else {
+      // Add new pickup
+      updatedPickups = [...existingPickups, pickupData];
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('pickups', JSON.stringify(updatedPickups));
+
+    // Show success message
+    alert(isEditMode ? 'Pickup updated successfully!' : 'Pickup scheduled successfully!');
+    
+    // Reset form
+    setSelectedDate(null);
+    setTime('');
+    setAddress('');
+    setWeight('');
+    setRemarks('');
   };
 
   const handleTimeClick = (e) => {
@@ -47,6 +105,8 @@ const PickupSchedule = () => {
       )}
 
       <form className="pickup-form" onSubmit={handleSubmit}>
+        <h2>{isEditMode ? 'Edit Pickup' : 'Schedule a Pickup'}</h2>
+        
         <div className="form-row">
           <div className="form-group">
             <label>Enter Date</label>
@@ -126,11 +186,11 @@ const PickupSchedule = () => {
         </div>
 
         <button type="submit" className="submit-button">
-          SCHEDULE A PICKUP
+          {isEditMode ? 'UPDATE PICKUP' : 'SCHEDULE A PICKUP'}
         </button>
 
         <p className="note">
-          To view the scheduled pickups click <span className="link">Check My Pickups</span>
+          To view the scheduled pickups click <span className="link" onClick={() => navigate('/schedules')}>Check My Pickups</span>
         </p>
       </form>
     </div>

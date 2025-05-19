@@ -6,16 +6,16 @@ function Profile() {
   const navigate = useNavigate();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [schedules, setSchedules] = useState([]);
+  const [pickups, setPickups] = useState([]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get('sidebar') === 'open') {
       setSidebarOpen(true);
     }
-    // Load schedules from localStorage
-    const stored = JSON.parse(localStorage.getItem('schedules')) || [];
-    setSchedules(stored);
+    // Load pickups from localStorage
+    const storedPickups = JSON.parse(localStorage.getItem('pickups')) || [];
+    setPickups(storedPickups);
   }, [location.search]);
 
   const currentPhone = localStorage.getItem('currentUser');
@@ -68,31 +68,11 @@ function Profile() {
         <nav className="nav-links">
           <button onClick={() => navigate('/rewards')}>🎁 Rewards</button>
           <button onClick={() => navigate('/history')}>📜 History</button>
-          <button onClick={() => navigate('/Schedules')}>📅 Schedules</button>
+          <button onClick={() => navigate('/schedules')}>📅 Schedules</button>
           <button className="logout-btn" onClick={handleLogout}>
             🚪 Logout
           </button>
         </nav>
-        {/* Show schedules below nav */}
-        {schedules.length > 0 && (
-          <div className="schedules-list" style={{ padding: '1rem' }}>
-            <h4>My Schedules</h4>
-            <ul>
-              {schedules.map((s, i) => (
-                <li key={i} style={{ marginBottom: 8 }}>
-                  <strong>
-                    {s.day ? `${s.day}, ` : ''}
-                    {s.date} {s.time}
-                  </strong>
-                  <br />
-                  {s.address}
-                  <br />
-                  <em>{s.description}</em>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </aside>
     </div>
   );

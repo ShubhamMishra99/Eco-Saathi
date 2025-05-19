@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Signup({ onSuccess }) {
+const Signup = ({ onSuccess }) => {
   const [step, setStep] = useState(1);
   const [phone, setPhone] = useState('');
   const [generatedOtp, setGeneratedOtp] = useState('');
@@ -10,7 +10,6 @@ function Signup({ onSuccess }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  // Step 1: Send OTP
   const handleSendOtp = (e) => {
     e.preventDefault();
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
@@ -19,7 +18,6 @@ function Signup({ onSuccess }) {
     setStep(2);
   };
 
-  // Step 2: Verify OTP
   const handleVerifyOtp = (e) => {
     e.preventDefault();
     if (otpInput === generatedOtp) {
@@ -29,7 +27,6 @@ function Signup({ onSuccess }) {
     }
   };
 
-  // Step 3: Final form submit
   const handleFinalSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,71 +60,79 @@ function Signup({ onSuccess }) {
     }
   };
 
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <form onSubmit={handleSendOtp}>
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+            <button type="submit">Send OTP</button>
+          </form>
+        );
+      case 2:
+        return (
+          <form onSubmit={handleVerifyOtp}>
+            <input
+              type="text"
+              placeholder="Enter OTP"
+              value={otpInput}
+              onChange={(e) => setOtpInput(e.target.value)}
+              required
+            />
+            <button type="submit">Verify OTP</button>
+          </form>
+        );
+      case 3:
+        return (
+          <form onSubmit={handleFinalSubmit}>
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Register</button>
+          </form>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="auth-container">
       <h2>Signup</h2>
-
-      {step === 1 && (
-        <form onSubmit={handleSendOtp}>
-          <input
-            type="tel"
-            placeholder="Phone Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            required
-          />
-          <button type="submit">Send OTP</button>
-        </form>
-      )}
-
-      {step === 2 && (
-        <form onSubmit={handleVerifyOtp}>
-          <input
-            type="text"
-            placeholder="Enter OTP"
-            value={otpInput}
-            onChange={(e) => setOtpInput(e.target.value)}
-            required
-          />
-          <button type="submit">Verify OTP</button>
-        </form>
-      )}
-
-      {step === 3 && (
-        <form onSubmit={handleFinalSubmit}>
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Register</button>
-        </form>
-      )}
+      {renderStep()}
     </div>
   );
-}
+};
 
 export default Signup;
