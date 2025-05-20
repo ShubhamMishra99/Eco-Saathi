@@ -37,8 +37,11 @@ const Home = () => {
       setShowPickupModal(true);
     } else {
       const element = document.getElementById(targetId);
-      element?.scrollIntoView({ behavior: 'smooth' }) || 
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      } else {
         alert(`${targetId.replace('-', ' ')} section not found or page not implemented.`);
+      }
     }
   };
 

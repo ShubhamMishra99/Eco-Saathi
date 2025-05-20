@@ -27,6 +27,12 @@
   margin-top: 20px;
 }
 
+@media (min-width: 1200px) {
+  .about-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .about-card {
   background-color: #fff;
   border-radius: 18px;
