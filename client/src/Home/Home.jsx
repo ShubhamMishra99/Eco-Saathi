@@ -7,6 +7,7 @@ import PickupSchedule from './PickupSchedule/PickupSchedule';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
 import HomeImage from '../assets/HomeImage.png';
+import Footer from './Footer/Footer';
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -144,9 +145,9 @@ const Home = () => {
           <p className="user-role">{storedUser?.phone === currentPhone ? storedUser.phone : 'No phone found'}</p>
         </div>
         <nav className="nav-links">
-          <button onClick={() => navigate('/rewards')}>🎁 Rewards</button>
-          <button onClick={() => navigate('/history')}>📜 History</button>
           <button onClick={() => navigate('/schedules')}>📅 Schedules</button>
+          <button onClick={() => navigate('/history')}>📜 History</button>
+          <button onClick={() => navigate('/rewards')}>🎁 Rewards</button>
           <button className="logout-btn" onClick={handleLogout}>🚪 Logout</button>
         </nav>
       </aside>
@@ -184,9 +185,7 @@ const Home = () => {
         </div>
       )}
 
-      <footer>
-        © {new Date().getFullYear()} EcoSaathi. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 };
