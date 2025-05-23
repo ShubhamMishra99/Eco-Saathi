@@ -1,0 +1,74 @@
+.theme-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  margin-left: 1rem;
+  position: relative;
+  width: 50px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-track {
+  background: #e0e0e0;
+  border-radius: 30px;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  transition: background 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle.dark .toggle-track {
+  background: #374151;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle.dark .toggle-thumb {
+  transform: translateX(24px);
+  background: #1f2937;
+}
+
+.theme-toggle:hover .toggle-thumb {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Add styles for when the toggle is next to auth buttons */
+.auth-btn + .theme-toggle {
+  margin-left: 0.5rem;
+}
+
+/* Ensure the toggle is visible in both themes */
+.theme-toggle .toggle-thumb {
+  color: var(--text-primary);
+}
+
+/* Add a subtle hover effect */
+.theme-toggle:hover .toggle-track {
+  filter: brightness(0.95);
+}
+
+/* Add a focus state for accessibility */
+.theme-toggle:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+  border-radius: 30px;
+} 

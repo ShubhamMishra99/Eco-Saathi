@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import './home.css';
 import HomeImage from '../assets/HomeImage.png';
 import Footer from './Footer/Footer';
+import ThemeToggle from '../components/ThemeToggle';
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -83,15 +84,18 @@ const Home = () => {
           <button onClick={handleHomeClick}>Home</button>
           <button onClick={() => handleNavButtonClick('about-section')}>About</button>
           <button onClick={() => handleNavButtonClick('price-chart-section')}>Price Chart</button>
-    <button onClick={() => navigate('/tracking')}>Real-time Tracking</button>
-
+          <button onClick={() => navigate('/tracking')}>Real-time Tracking</button>
 
           {isLoggedIn ? (
-            <button className="profile-btn" onClick={handleProfileClick}>Profile</button>
+            <>
+              <button className="profile-btn" onClick={handleProfileClick}>Profile</button>
+              <ThemeToggle />
+            </>
           ) : (
             <>
               <button className="auth-btn" onClick={() => setShowLogin(true)}>Login</button>
               <button className="auth-btn" onClick={() => setShowSignup(true)}>Signup</button>
+              <ThemeToggle />
             </>
           )}
         </nav>
