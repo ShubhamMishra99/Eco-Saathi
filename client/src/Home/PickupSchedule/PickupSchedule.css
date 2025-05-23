@@ -1,7 +1,8 @@
 .pickup-container {
   padding: 2rem;
-  background-color: #f7fbf7;
+  background-color: var(--card-bg);
   font-family: 'Poppins', sans-serif;
+  color: var(--text-primary);
 }
 
 .pickup-form {
@@ -24,13 +25,13 @@ label {
   font-weight: 600;
   display: block;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .optional {
   font-weight: 400;
   font-size: 0.9rem;
-  color: #888;
+  color: var(--text-secondary);
 }
 
 .input-icon-wrapper {
@@ -42,17 +43,18 @@ label {
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-  color: #888;
+  color: var(--text-secondary);
 }
 
 .custom-input {
   width: 100%;
   padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #fff;
+  background-color: var(--bg-primary);
   box-sizing: border-box;
+  color: var(--text-primary);
 }
 
 textarea.custom-input {
@@ -82,16 +84,17 @@ textarea.custom-input {
   font-style: italic;
   font-size: 0.95rem;
   text-align: center;
+  color: var(--text-secondary);
 }
 
 .link {
-  color: #0c8b1e;
+  color: var(--accent-primary);
   font-weight: 600;
   cursor: pointer;
 }
 
 .time-warning {
-  color: #e53935;
+  color: var(--error-text);
   font-size: 0.85rem;
   margin-top: 0.3rem;
   font-style: italic;
@@ -103,19 +106,34 @@ textarea.custom-input {
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  color: var(--text-primary);
 }
 
 .react-datepicker__header {
-  background-color: #f1f4ef;
-  border-bottom: 1px solid #ccc;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .react-datepicker__day--selected {
-  background-color: #1a73e8;
+  background-color: var(--accent-primary);
   color: white;
 }
 
 .react-datepicker__day:hover {
-  background-color: #e0e0e0;
+  background-color: var(--bg-secondary);
+}
+
+.react-datepicker__day {
+  color: var(--text-primary);
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: var(--text-primary);
+}
+
+.react-datepicker__navigation {
+  color: var(--text-primary);
 }
