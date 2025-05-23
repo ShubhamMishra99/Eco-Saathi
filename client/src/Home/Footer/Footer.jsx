@@ -19,7 +19,9 @@ const Footer = () => (
           <span className="footer-brand-sub">connecting nature</span>
         </div>
         <p className="footer-desc">
-          India's Best Eco-Friendly Products Platform For Shopping! We deal with Bamboo Products, Sabai Grass Products, Jute Bags, Cotton Bags, and more.
+India’s Premier Eco-Friendly Platform for Recycling Household & Office Waste!
+
+
         </p>
         <div className="footer-address">
           <strong>ADDRESS</strong><br />
