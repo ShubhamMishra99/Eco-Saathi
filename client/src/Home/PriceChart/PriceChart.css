@@ -1,19 +1,19 @@
 .price-chart-container {
   padding: 40px 40px;
   text-align: center;
-  background-color: #f8f6f3; /* Match home background */
+  background-color: var(--bg-primary); /* Ensure using theme background */
   margin-top: 40px;
   border-radius: 18px;
-  box-shadow: 0 6px 24px rgba(163, 201, 58, 0.10); /* Subtle green shadow */
+  box-shadow: 0 6px 24px var(--shadow-color); /* Ensure using theme shadow */
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  color: var(--text-primary);
+  color: var(--text-primary); /* Ensure container text color is theme adaptive */
 }
 
 .price-chart-title {
   font-size: 2.2rem;
-  color: var(--text-primary);
+  color: var(--text-primary); /* Ensure using theme primary text color */
   margin-bottom: 36px;
   font-weight: 800;
   letter-spacing: 2px;
