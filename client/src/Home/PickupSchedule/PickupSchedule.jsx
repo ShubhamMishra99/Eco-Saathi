@@ -16,6 +16,9 @@ const PickupSchedule = () => {
   const [weight, setWeight] = useState('');
   const [remarks, setRemarks] = useState('');
   const [showTimeModal, setShowTimeModal] = useState(false);
+  const [selectedMaterials, setSelectedMaterials] = useState([]);
+
+  const materialCategories = ['Iron', 'Plastic', 'Glass', 'Paper', 'Electronics'];
 
   useEffect(() => {
     if (isEditMode && pickupData) {
@@ -24,6 +27,7 @@ const PickupSchedule = () => {
       setAddress(pickupData.address);
       setWeight(pickupData.weight);
       setRemarks(pickupData.remarks || '');
+      setSelectedMaterials(pickupData.material || []);
     }
   }, [isEditMode, pickupData]);
 
@@ -31,8 +35,8 @@ const PickupSchedule = () => {
     e.preventDefault();
     
     // Validate required fields
-    if (!selectedDate || !time || !address || !weight) {
-      alert('Please fill in all required fields');
+    if (!selectedDate || !time || !address || !weight || selectedMaterials.length === 0) {
+      alert('Please fill in all required fields including material categories');
       return;
     }
 
@@ -45,7 +49,8 @@ const PickupSchedule = () => {
       weight,
       remarks,
       status: isEditMode ? location.state.pickupData.status : 'Pending',
-      createdAt: isEditMode ? location.state.pickupData.createdAt : new Date().toISOString()
+      createdAt: isEditMode ? location.state.pickupData.createdAt : new Date().toISOString(),
+      material: selectedMaterials
     };
 
     // Get existing pickups from localStorage
@@ -74,6 +79,7 @@ const PickupSchedule = () => {
     setAddress('');
     setWeight('');
     setRemarks('');
+    setSelectedMaterials([]);
   };
 
   const handleTimeClick = (e) => {
@@ -84,6 +90,34 @@ const PickupSchedule = () => {
   };
 
   const closeTimeModal = () => setShowTimeModal(false);
+
+  const handleMaterialClick = (material) => {
+    setSelectedMaterials(prev => 
+      prev.includes(material) 
+        ? prev.filter(item => item !== material)
+        : [...prev, material]
+    );
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const handleTimeChange = (e) => {
+    setTime(e.target.value);
+  };
+
+  const handleAddressChange = (e) => {
+    setAddress(e.target.value);
+  };
+
+  const handleWeightChange = (e) => {
+    setWeight(e.target.value);
+  };
+
+  const handleRemarksChange = (e) => {
+    setRemarks(e.target.value);
+  };
 
   return (
     <div className="pickup-container">
@@ -104,68 +138,54 @@ const PickupSchedule = () => {
         </div>
       )}
 
-      <form className="pickup-form" onSubmit={handleSubmit}>
-        <h2>{isEditMode ? 'Edit Pickup' : 'Schedule a Pickup'}</h2>
-        
-        <div className="form-row">
-          <div className="form-group">
-            <label>Enter Date</label>
-            <div className="input-icon-wrapper">
-              <i className="fa fa-calendar icon" />
-              <DatePicker
+      <div className="pickup-content">
+        <form onSubmit={handleSubmit} className="pickup-form">
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="pickupDate">Enter Date</label>
+              <DatePicker 
+                id="pickupDate"
                 selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
+                onChange={handleDateChange}
+                dateFormat="dd/MM/yyyy"
                 placeholderText="DD/MM/YY"
                 className="custom-input"
-                dateFormat="dd/MM/yyyy"
-                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="pickupTime">Enter Time</label>
+              <input 
+                type="text"
+                id="pickupTime"
+                value={time}
+                onChange={handleTimeChange}
+                className="custom-input"
+                placeholder="--:-- --"
               />
             </div>
           </div>
 
           <div className="form-group">
-            <label>Enter Time</label>
-            <div className="input-icon-wrapper">
-              <i className="fa fa-clock icon" />
-              <input
-                type="time"
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                className="custom-input"
-                disabled={!selectedDate}
-                onClick={handleTimeClick}
-                required
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Select an Address</label>
-          <div className="input-icon-wrapper">
-            <i className="fa fa-map-marker icon" />
+            <label htmlFor="pickupAddress">Select an Address</label>
             <select
-              className="custom-input"
+              id="pickupAddress"
               value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
+              onChange={handleAddressChange}
+              className="custom-input"
             >
               <option value="">Choose Address</option>
               <option value="Home">Home</option>
               <option value="Office">Office</option>
             </select>
           </div>
-        </div>
 
-        <div className="form-group">
-          <label>Estimated Weight</label>
-          <div className="input-icon-wrapper">
-            <i className="fa fa-cube icon" />
+          <div className="form-group">
+            <label htmlFor="pickupWeight">Estimated Weight</label>
             <select
-              className="custom-input"
+              id="pickupWeight"
               value={weight}
-              onChange={(e) => setWeight(e.target.value)}
-              required
+              onChange={handleWeightChange}
+              className="custom-input"
             >
               <option value="">Select Weight</option>
               <option value="0-5kg">0-5 kg</option>
@@ -173,26 +193,44 @@ const PickupSchedule = () => {
               <option value="10+kg">10+ kg</option>
             </select>
           </div>
-        </div>
 
-        <div className="form-group">
-          <label>Remarks <span className="optional">(Optional)</span></label>
-          <textarea
-            className="custom-input"
-            rows="2"
-            value={remarks}
-            onChange={(e) => setRemarks(e.target.value)}
-          />
-        </div>
+          <div className="form-group">
+            <label>Select Material Type</label>
+            <div className="material-options">
+              {materialCategories.map((material) => (
+                <div
+                  key={material}
+                  className={
+                    `material-option ${selectedMaterials.includes(material) ? 'selected' : ''}`
+                  }
+                  onClick={() => handleMaterialClick(material)}
+                >
+                  {material}
+                </div>
+              ))}
+            </div>
+          </div>
 
-        <button type="submit" className="submit-button">
-          {isEditMode ? 'UPDATE PICKUP' : 'SCHEDULE A PICKUP'}
-        </button>
+          <div className="form-group">
+            <label htmlFor="pickupRemarks">Remarks <span className="optional">(Optional)</span></label>
+            <textarea
+              id="pickupRemarks"
+              value={remarks}
+              onChange={handleRemarksChange}
+              className="custom-input"
+              rows="3"
+            ></textarea>
+          </div>
 
-        <p className="note">
-          To view the scheduled pickups click <span className="link" onClick={() => navigate('/schedules')}>Check My Pickups</span>
-        </p>
-      </form>
+          <button type="submit" className="submit-button">
+            {isEditMode ? 'UPDATE PICKUP' : 'SCHEDULE A PICKUP'}
+          </button>
+
+          <p className="note">
+            To view the scheduled pickups click <span className="link" onClick={() => navigate('/schedules')}>Check My Pickups</span>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };
