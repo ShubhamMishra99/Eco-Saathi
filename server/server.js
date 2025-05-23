@@ -1,28 +1,61 @@
-const express = require('express');//Creates the web server
+const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const authRoutes = require('./routes/auth');
+const locationRoutes = require('./routes/location');
 
 const app = express();
-app.use(cors());//Allows frontend on different ports (e.g,localhost:3000)
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Consider restricting in production
+    methods: ["GET", "POST"]
+  }
+});
+
+// 🔧 Middleware
+app.use(cors());
 app.use(express.json());
 
-// ✅ MongoDB Connection
-const MONGO_URI = 'mongodb+srv://mishrashubham8932:Shubh9956@ecosaathi.fzht13t.mongodb.net/ecosaathi?retryWrites=true&w=majority';
+// 🔌 Routes
+app.use('/api', authRoutes);
+app.use('/api/location', locationRoutes);
 
-mongoose.connect(MONGO_URI, {
+// 🔗 MongoDB Connection
+mongoose.connect('mongodb://localhost:27017/eco-saathi', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
   .then(() => console.log('✅ Connected to MongoDB'))
   .catch((err) => console.error('❌ MongoDB connection error:', err));
 
-// ✅ Routes
-app.use('/api', authRoutes);
+// 📡 Real-Time Location Tracking
+io.on('connection', (socket) => {
+  console.log(`🟢 New socket connection: ${socket.id}`);
 
-// ✅ Server Start
+  socket.on('locationUpdate', (data) => {
+    const { collectorId, lat, lng } = data;
+    if (!collectorId || typeof lat !== 'number' || typeof lng !== 'number') {
+      console.warn('⚠️ Invalid location data received');
+      return;
+    }
+
+    console.log(`📍 Location from ${collectorId}: (${lat}, ${lng})`);
+
+    // Broadcast to all other clients (e.g., admin dashboard)
+    socket.broadcast.emit('receiveLocation', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`🔴 Socket disconnected: ${socket.id}`);
+  });
+});
+
+// 🚀 Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
