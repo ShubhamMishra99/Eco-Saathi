@@ -83,7 +83,9 @@ const Home = () => {
           <button onClick={handleHomeClick}>Home</button>
           <button onClick={() => handleNavButtonClick('about-section')}>About</button>
           <button onClick={() => handleNavButtonClick('price-chart-section')}>Price Chart</button>
-          <button onClick={() => alert('Real-time Tracking clicked')}>Real-time Tracking</button>
+    <button onClick={() => navigate('/tracking')}>Real-time Tracking</button>
+
+
           {isLoggedIn ? (
             <button className="profile-btn" onClick={handleProfileClick}>Profile</button>
           ) : (
