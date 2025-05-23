@@ -114,7 +114,7 @@ html {
   padding: 3rem 4rem 0 4rem;
   min-height: 80vh;
   margin-top: 70px;
-  background: var(--bg-primary);
+  background: var(#a3c93a);
 }
 
 .hero-left {

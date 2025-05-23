@@ -6,7 +6,6 @@ import About from './About/About';
 import PickupSchedule from './PickupSchedule/PickupSchedule';
 import { useNavigate } from 'react-router-dom';
 import './home.css';
-import HomeImage from '../assets/HomeImage.png';
 import Footer from './Footer/Footer';
 import ThemeToggle from '../components/ThemeToggle';
 
@@ -125,9 +124,6 @@ const Home = () => {
               <span className="stat-label">Active Projects</span>
             </div>
           </div>
-        </div>
-        <div className="hero-right">
-          <img src={HomeImage} alt="EcoSaathi Illustration" className="hero-illustration" />
         </div>
       </section>
 
