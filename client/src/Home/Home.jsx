@@ -102,7 +102,7 @@ const Home = () => {
           <h4 className="hero-subtitle">WE ARE</h4>
           <h1 className="hero-title">SOLVING <br /> GLOBAL <br /> PROBLEMS</h1>
           <p className="hero-desc">
-            EcoSaathi makes a track to environmental solutions with a positive impact on climate changes. Join the community, building a balance of business and society with safe nature and better future for our planet.
+           Eco Saathi is on a mission to build a sustainable India by simplifying the collection of recyclable waste from homes, offices, and communities. We connect environmentally conscious individuals with reliable recycling services, promoting responsible disposal and a greener future.
           </p>
           <button className="cta-btn" onClick={() => setShowPickupModal(true)}>
             SCHEDULE A PICKUP
