@@ -114,7 +114,7 @@ html {
   padding: 3rem 4rem 0 4rem;
   min-height: 80vh;
   margin-top: 70px;
-  background: var(#a3c93a);
+  background: var(--bg-primary);
 }
 
 .hero-left {
@@ -235,6 +235,13 @@ html {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  z-index: 10;
+}
+
+.pickup-modal-close:hover {
+  color: var(--text-primary);
 }
 
 /* ==== Sidebar ==== */
@@ -407,6 +414,11 @@ footer {
   .hero-title {
     font-size: 2.6rem;
   }
+  #about-section,
+  .price-chart-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -427,6 +439,11 @@ footer {
   .hero-stats {
     flex-direction: column;
     gap: 1rem;
+  }
+  #about-section,
+  .price-chart-section {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 }
 
