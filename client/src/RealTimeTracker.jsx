@@ -1,11 +1,9 @@
-// src/components/RealTimeTracker.jsx
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
-import './RealTimeTracker.css';
 
-const socket = io('http://localhost:5000'); // Change if deployed
+const socket = io('http://localhost:5000');
 
-const RealTimeTracker = () => {
+export default function RealTimeTracker() {
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
 
@@ -17,7 +15,7 @@ const RealTimeTracker = () => {
           longitude: position.coords.longitude,
         };
         setLocation(coords);
-        socket.emit('locationUpdate', coords); // Send to server
+        socket.emit('locationUpdate', coords);
       },
       (err) => {
         setError(err.message);
@@ -32,34 +30,72 @@ const RealTimeTracker = () => {
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
+  const styles = {
+    htmlBodyRoot: {
+      margin: 0,
+      padding: 0,
+      height: '100%',
+      width: '100%',
+      overflow: 'hidden',
+      fontFamily: 'Arial, sans-serif',
+    },
+    trackerContainer: {
+      position: 'relative',
+      height: '100vh',
+      width: '100vw',
+      backgroundColor: '#f5f5f5',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    trackerTitle: {
+      margin: 0,
+      padding: '12px 16px',
+      backgroundColor: '#007bff',
+      color: 'white',
+      fontSize: '1.5rem',
+      textAlign: 'center',
+      flexShrink: 0,
+      userSelect: 'none',
+    },
+    errorMessage: {
+      color: 'red',
+      padding: '10px',
+      textAlign: 'center',
+      flexShrink: 0,
+    },
+    loadingText: {
+      flexGrow: 1,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: '1.2rem',
+      color: '#555',
+    },
+    mapIframe: {
+      flexGrow: 1,
+      border: 'none',
+      width: '100%',
+      height: '100%',
+    },
+  };
+
   return (
-    <div className="tracker-container">
-      <h2 className="tracker-title">Real-time Location Tracker</h2>
-      {error && <div className="error-message">{error}</div>}
+    <div style={styles.trackerContainer}>
+      <h2 style={styles.trackerTitle}>Real-time Location Tracker</h2>
+      {error && <div style={styles.errorMessage}>{error}</div>}
+
       {location ? (
-        <div className="location-info">
-          <div className="location-data">
-            <span>Latitude:</span>
-            <span>{location.latitude}</span>
-          </div>
-          <div className="location-data">
-            <span>Longitude:</span>
-            <span>{location.longitude}</span>
-          </div>
-          <a 
-            href={`https://maps.google.com/?q=${location.latitude},${location.longitude}`} 
-            target="_blank" 
-            rel="noreferrer"
-            className="map-link"
-          >
-            View on Map
-          </a>
-        </div>
+        <iframe
+          title="Live Location Map"
+          style={styles.mapIframe}
+          src={`https://maps.google.com/maps?q=${location.latitude},${location.longitude}&z=15&output=embed`}
+          allowFullScreen
+          loading="lazy"
+          frameBorder="0"
+        ></iframe>
       ) : (
-        <p className="loading-text">Getting location...</p>
+        <p style={styles.loadingText}>Getting location...</p>
       )}
     </div>
   );
-};
-
-export default RealTimeTracker;
+}
