@@ -1,0 +1,250 @@
+:root {
+  /* Primary Colors */
+  --primary-green: #22c55e;
+  --primary-green-dark: #16a34a;
+  --primary-green-light: #4ade80;
+  
+  /* Secondary Colors */
+  --secondary-teal: #0d9488;
+  --secondary-teal-dark: #0f766e;
+  --secondary-teal-light: #14b8a6;
+  
+  /* Neutral Colors */
+  --neutral-white: #ffffff;
+  --neutral-gray-50: #f9fafb;
+  --neutral-gray-100: #f3f4f6;
+  --neutral-gray-200: #e5e7eb;
+  --neutral-gray-300: #d1d5db;
+  --neutral-gray-400: #9ca3af;
+  --neutral-gray-500: #6b7280;
+  --neutral-gray-600: #4b5563;
+  --neutral-gray-700: #374151;
+  --neutral-gray-800: #1f2937;
+  --neutral-gray-900: #111827;
+  
+  /* Semantic Colors */
+  --success: #22c55e;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+}
+
+/* Global Styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--neutral-gray-50);
+  color: var(--neutral-gray-900);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
+header {
+  background-color: var(--neutral-white);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md) var(--spacing-xl);
+}
+
+header h1 {
+  color: var(--primary-green);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+nav ul {
+  display: flex;
+  gap: var(--spacing-lg);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  color: var(--neutral-gray-600);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--primary-green);
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--neutral-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-green);
+  color: var(--neutral-white);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-green-dark);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-teal);
+  color: var(--neutral-white);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-teal-dark);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--primary-green);
+  color: var(--primary-green);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-green);
+  color: var(--neutral-white);
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  color: var(--neutral-gray-700);
+  font-weight: 500;
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--neutral-gray-300);
+  border-radius: var(--radius-md);
+  transition: border-color 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+/* Request Card Styles */
+.request-card {
+  background-color: var(--neutral-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+  border-left: 4px solid var(--primary-green);
+}
+
+.request-card h3 {
+  color: var(--neutral-gray-800);
+  margin-top: 0;
+  margin-bottom: var(--spacing-sm);
+}
+
+.request-card p {
+  color: var(--neutral-gray-600);
+  margin: var(--spacing-xs) 0;
+}
+
+/* Status Badge Styles */
+.status-badge {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-active {
+  background-color: var(--success);
+  color: var(--neutral-white);
+}
+
+.status-pending {
+  background-color: var(--warning);
+  color: var(--neutral-white);
+}
+
+.status-completed {
+  background-color: var(--info);
+  color: var(--neutral-white);
+}
+
+/* Loading State */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+  color: var(--neutral-gray-500);
+}
+
+/* Error Message */
+.error-message {
+  background-color: var(--error);
+  color: var(--neutral-white);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header {
+    padding: var(--spacing-md);
+  }
+  
+  nav ul {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .card {
+    padding: var(--spacing-md);
+  }
+  
+  .btn {
+    width: 100%;
+  }
+} 
