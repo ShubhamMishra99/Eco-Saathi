@@ -120,17 +120,18 @@ const Register = () => {
                             disabled={isLoading}
                         />
                         <select
-                            className="select"
-                            name="vehicleType"
-                            value={formData.vehicleType}
-                            onChange={handleChange}
-                            disabled={isLoading}
-                        >
-                            <option value="">Select Vehicle Type</option>
-                            <option value="Bicycle">Truck</option>
-                            <option value="Electric Scooter">Mini Truck</option>
-                            <option value="Electric Bike">Trolley</option>
-                        </select>
+  className="select"
+  name="vehicleType"
+  value={formData.vehicleType}
+  onChange={handleChange}
+  disabled={isLoading}
+>
+  <option value="">Select Vehicle Type</option>
+  <option value="Truck">Truck</option>
+  <option value="Mini Truck">Mini Truck</option>
+  <option value="Trolley">Trolley</option>
+</select>
+
                         <input
                             type="password"
                             className="input"

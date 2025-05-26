@@ -1,27 +1,42 @@
+require('dotenv').config(); // Ensure this is at the top if you're using .env
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
-
+const riderRoutes = require('./routes/rider');
 const authRoutes = require('./routes/auth');
 const locationRoutes = require('./routes/location');
 
 const app = express();
 const server = http.createServer(app);
 
-// CORS Configuration
+// ✅ Use the correct frontend origin here
+const CLIENT_URL = 'http://localhost:5173'; // Or use process.env.CLIENT_URL if using .env
+
+// ✅ CORS Configuration for Express
+
+const allowedOrigins = process.env.CLIENT_URLS.split(',');
+
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Socket.IO Configuration
+
+// ✅ CORS Configuration for Socket.IO
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: CLIENT_URL,
         methods: ['GET', 'POST'],
         credentials: true
     }
@@ -33,15 +48,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api', authRoutes);
+app.use('/api/rider', riderRoutes);
+
 app.use('/api/location', locationRoutes);
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/eco-saathi', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('✅ Connected to MongoDB'))
-.catch((err) => console.error('❌ MongoDB connection error:', err));
+mongoose.connect('mongodb://localhost:27017/eco-saathi')
+    .then(() => console.log('✅ Connected to MongoDB'))
+    .catch((err) => console.error('❌ MongoDB connection error:', err));
 
 // Socket.IO Event Handlers
 io.on('connection', (socket) => {

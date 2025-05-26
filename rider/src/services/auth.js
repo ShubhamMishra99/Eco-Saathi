@@ -40,26 +40,28 @@ api.interceptors.response.use(
 // Auth functions
 export const register = async (userData) => {
     try {
-        const response = await api.post('/auth/register', userData);
-        if (response.data.success) {
+        // Strip confirmPassword before sending to backend
+        const { confirmPassword, ...cleanedData } = userData;
+
+        const response = await api.post('/rider/register', cleanedData);
+
+        if (response.data.message === 'Registration successful') {
             return response.data;
         }
+
         throw new Error(response.data.message || 'Registration failed');
     } catch (error) {
-        if (error.response) {
-            throw new Error(error.response.data.message || 'Registration failed');
-        } else if (error.request) {
-            throw new Error('Network error. Please check your connection.');
-        }
-        throw new Error('Registration failed. Please try again.');
+        throw new Error(error.response?.data?.message || 'Registration failed');
     }
 };
 
+
 export const login = async (credentials) => {
     try {
-        const response = await api.post('/auth/login', credentials);
-        if (response.data.token) {
-            localStorage.setItem('authToken', response.data.token);
+        const response = await api.post('/rider/login', credentials);
+        if (response.data.rider) {  // your backend returns rider object
+            // Save rider info instead of token
+            localStorage.setItem('authUser', JSON.stringify(response.data.rider));
             return response.data;
         }
         throw new Error('Login failed');
@@ -67,6 +69,8 @@ export const login = async (credentials) => {
         throw new Error(error.response?.data?.message || 'Login failed');
     }
 };
+
+
 
 export const logout = async () => {
     try {
