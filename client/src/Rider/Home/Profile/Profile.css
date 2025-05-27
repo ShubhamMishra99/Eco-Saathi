@@ -76,43 +76,104 @@
 
 .header-buttons {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
+  margin-top: 1rem;
+}
+
+.theme-toggle {
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.theme-toggle:hover {
+  background: var(--hover-bg);
+  transform: translateY(-1px);
+}
+
+.theme-toggle i {
+  font-size: 1.2rem;
 }
 
 .edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: #3498db;
+  background: #4CAF50;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  font-weight: 500;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  width: 100%;
 }
 
 .edit-button:hover {
-  background: #2980b9;
+  background: #45a049;
+  transform: translateY(-2px);
 }
 
 .edit-button.cancel {
-  background: #e74c3c;
+  background: #f44336;
 }
 
 .edit-button.cancel:hover {
-  background: #c0392b;
+  background: #d32f2f;
 }
 
 .edit-button.logout {
-  background: #e74c3c;
+  background: #f44336;
 }
 
 .edit-button.logout:hover {
-  background: #c0392b;
+  background: #d32f2f;
+}
+
+.edit-button i {
+  font-size: 1.1rem;
+}
+
+/* Dark theme styles */
+.dark-theme .edit-button {
+  background: #2e7d32;
+}
+
+.dark-theme .edit-button:hover {
+  background: #1b5e20;
+}
+
+.dark-theme .edit-button.cancel,
+.dark-theme .edit-button.logout {
+  background: #c62828;
+}
+
+.dark-theme .edit-button.cancel:hover,
+.dark-theme .edit-button.logout:hover {
+  background: #b71c1c;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header-buttons {
+    width: 100%;
+  }
+
+  .edit-button {
+    width: 100%;
+  }
 }
 
 .profile-content {
@@ -750,28 +811,4 @@ body.modal-open {
 /* Add smooth transition for theme changes */
 * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Theme Toggle Button */
-.theme-toggle {
-  padding: 0.75rem;
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-}
-
-.theme-toggle:hover {
-  background: var(--hover-bg);
-  transform: scale(1.05);
-}
-
-.theme-toggle i {
-  font-size: 1.2rem;
 }

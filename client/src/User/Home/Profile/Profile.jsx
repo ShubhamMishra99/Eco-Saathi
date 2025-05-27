@@ -3,17 +3,69 @@ import './Profile.css';
 
 const Profile = ({ onLogout }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
+  const [isImageLoading, setIsImageLoading] = useState(false);
+  const [imageError, setImageError] = useState('');
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState(false);
   const [formData, setFormData] = useState({
-    name: 'User Name',
-    email: 'user.name@example.com',
-    phone: '+91XXXXXXXXXX',
-    address: 'Phase 2,Electronic City,Bengaluru,Karnataka, India',
+    name: '',
+    email: '',
+    phone: '',
+    address: '',
     preferences: {
-      notifications: true,
+      notifications: false,
       newsletter: false,
-      smsUpdates: true
+      smsUpdates: false
     }
   });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageError('');
+    
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setImageError('Please select an image file');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setImageError('Image size should be less than 5MB');
+        return;
+      }
+
+      setIsImageLoading(true);
+      const reader = new FileReader();
+      
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+        setIsImageLoading(false);
+      };
+      
+      reader.onerror = () => {
+        setImageError('Error reading the image file');
+        setIsImageLoading(false);
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setShowRemoveConfirm(true);
+  };
+
+  const confirmRemoveImage = () => {
+    setProfileImage(null);
+    setImageError('');
+    setShowRemoveConfirm(false);
+  };
+
+  const cancelRemoveImage = () => {
+    setShowRemoveConfirm(false);
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -43,9 +95,70 @@ const Profile = ({ onLogout }) => {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <div className="profile-avatar">
-          <i className="fas fa-user"></i>
+        <div className="profile-avatar-container">
+          <div className="profile-avatar">
+            {isImageLoading ? (
+              <div className="image-loading">
+                <i className="fas fa-spinner fa-spin"></i>
+              </div>
+            ) : profileImage ? (
+              <img src={profileImage} alt="Profile" className="profile-image" />
+            ) : (
+              <i className="fas fa-user"></i>
+            )}
+          </div>
+          
+          {isEditing && (
+            <div className="profile-image-controls">
+              <label htmlFor="profile-image-upload" className="image-control-button upload-button">
+                <i className="fas fa-camera"></i>
+                <span>{profileImage ? 'Change Photo' : 'Add Photo'}</span>
+              </label>
+              {profileImage && (
+                <button 
+                  className="image-control-button remove-button"
+                  onClick={handleRemoveImage}
+                  title="Remove profile picture"
+                >
+                  <i className="fas fa-trash"></i>
+                  <span>Remove</span>
+                </button>
+              )}
+              <input
+                id="profile-image-upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+            </div>
+          )}
+          {imageError && <div className="image-error">{imageError}</div>}
         </div>
+
+        {showRemoveConfirm && (
+          <div className="remove-confirm-dialog">
+            <div className="remove-confirm-content">
+              <h3>Remove Profile Picture?</h3>
+              <p>Are you sure you want to remove your profile picture?</p>
+              <div className="remove-confirm-actions">
+                <button 
+                  className="confirm-remove-button"
+                  onClick={confirmRemoveImage}
+                >
+                  Yes, Remove
+                </button>
+                <button 
+                  className="cancel-remove-button"
+                  onClick={cancelRemoveImage}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="profile-info">
           <h2>{formData.name}</h2>
           <p className="member-since">Member since March 2025</p>

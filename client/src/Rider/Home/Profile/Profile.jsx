@@ -4,18 +4,6 @@ import './Profile.css';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const [isDarkTheme, setIsDarkTheme] = useState(() => {
-    // Check if user has a theme preference in localStorage
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark';
-  });
-
-  // Apply theme on mount and when theme changes
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
-    localStorage.setItem('theme', isDarkTheme ? 'dark' : 'light');
-  }, [isDarkTheme]);
-
   const [profileData, setProfileData] = useState({
     name: '',
     email: '',
@@ -116,10 +104,6 @@ const Profile = () => {
     }
   };
 
-  const toggleTheme = () => {
-    setIsDarkTheme(prev => !prev);
-  };
-
   return (
     <div className="profile-section">
       <div className="profile-header">
@@ -131,13 +115,6 @@ const Profile = () => {
           <p className="member-since">Member since {profileData.joinedDate}</p>
         </div>
         <div className="header-buttons">
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            title={isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
-          >
-            <i className={`fas fa-${isDarkTheme ? 'sun' : 'moon'}`}></i>
-          </button>
           <button
             className={`edit-button ${isEditing ? 'cancel' : ''}`}
             onClick={() => setIsEditing(!isEditing)}
