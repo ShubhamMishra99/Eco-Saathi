@@ -1,0 +1,159 @@
+.rider-footer {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 48px 0 0 0;
+  margin-top: 48px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+}
+
+.footer-section h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin: 0 0 20px 0;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 2px;
+  background: #2196F3;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-section ul li {
+  margin-bottom: 12px;
+}
+
+.footer-section ul li a {
+  color: #b3b3b3;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: #2196F3;
+}
+
+.footer-section ul li a i {
+  font-size: 1rem;
+  width: 20px;
+}
+
+/* Contact Info */
+.contact-info li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #b3b3b3;
+}
+
+.contact-info li i {
+  color: #2196F3;
+  font-size: 1.1rem;
+  width: 20px;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  gap: 16px;
+}
+
+.social-link {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-link:hover {
+  background: #2196F3;
+  transform: translateY(-3px);
+}
+
+.social-link i {
+  font-size: 1.2rem;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px;
+  margin-top: 48px;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  color: #b3b3b3;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom-links a {
+  color: #b3b3b3;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: #2196F3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .rider-footer {
+    padding: 32px 0 0 0;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .footer-bottom-links {
+    justify-content: center;
+  }
+} 

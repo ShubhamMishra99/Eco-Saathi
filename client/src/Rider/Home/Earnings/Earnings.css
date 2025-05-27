@@ -1,0 +1,237 @@
+.earnings-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.earnings-header {
+  margin-bottom: 32px;
+}
+
+.earnings-header h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.earnings-tabs {
+  display: flex;
+  gap: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 16px;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  border: none;
+  background: none;
+  color: #666;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.tab-button i {
+  font-size: 1.1rem;
+}
+
+.tab-button:hover {
+  background: #f5f5f5;
+  color: #2196F3;
+}
+
+.tab-button.active {
+  background: #2196F3;
+  color: white;
+}
+
+.earnings-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.earnings-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #e3f2fd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon i {
+  font-size: 1.5rem;
+  color: #2196F3;
+}
+
+.card-content h3 {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 8px 0;
+}
+
+.card-content .amount {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.earnings-history {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.earnings-history h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0 0 24px 0;
+}
+
+.history-list {
+  display: grid;
+  gap: 16px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.history-item:hover {
+  background: #e3f2fd;
+}
+
+.history-date {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #666;
+}
+
+.history-date i {
+  color: #2196F3;
+  font-size: 1.1rem;
+}
+
+.history-details {
+  display: flex;
+  gap: 32px;
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.detail .label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.detail .value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .earnings-container {
+    padding: 16px;
+  }
+
+  .earnings-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-button {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+  }
+
+  .earnings-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .history-item {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .history-details {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .detail {
+    align-items: flex-start;
+  }
+}
+
+.total-stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.total-earnings-banner {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.total-pickups-banner {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.total-earnings-content,
+.total-pickups-content {
+  text-align: center;
+}
+
+.total-earnings-content h2,
+.total-pickups-content h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.total-amount {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0;
+} 
