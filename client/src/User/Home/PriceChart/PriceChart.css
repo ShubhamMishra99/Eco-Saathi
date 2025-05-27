@@ -1,0 +1,356 @@
+.price-chart-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.price-chart-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.price-chart-header h2 {
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+}
+
+.price-chart-header p {
+  color: #7f8c8d;
+  margin: 0;
+}
+
+.category-select {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.category-dropdown {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem 1.5rem;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  border: 2px solid #3498db;
+  border-radius: 12px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233498db' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1.5rem center;
+  background-size: 1.2em;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(52, 152, 219, 0.1);
+  transition: all 0.3s ease;
+}
+
+.category-dropdown:hover {
+  border-color: #2980b9;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(52, 152, 219, 0.2);
+  transform: translateY(-1px);
+}
+
+.category-dropdown:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+  background-color: white;
+}
+
+/* Style for the dropdown options */
+.category-dropdown option {
+  padding: 1rem;
+  font-size: 1.1rem;
+  background-color: white;
+  color: #2c3e50;
+}
+
+.category-dropdown option:checked {
+  background-color: #3498db;
+  color: white;
+}
+
+.price-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.price-category {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 0;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.price-category:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.price-category h3 {
+  color: #2c3e50;
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
+  font-weight: 600;
+}
+
+.price-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.price-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.item-name {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.item-price {
+  color: #27ae60;
+  font-weight: 600;
+}
+
+.price-note {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.price-note i {
+  color: #3498db;
+  font-size: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.price-note p {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Custom scrollbar styles */
+.price-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.price-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.price-grid::-webkit-scrollbar-thumb {
+  background: #3498db;
+  border-radius: 4px;
+}
+
+.price-grid::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+}
+
+@media (max-width: 768px) {
+  .price-chart-container {
+    padding: 1rem;
+  }
+
+  .category-dropdown {
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 0.875rem 1.25rem;
+  }
+
+  .price-grid {
+    max-height: 500px;
+  }
+}
+
+.price-chart-footer {
+  margin-top: 3rem;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.footer-section h4 {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
+}
+
+.footer-section p {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer-section i {
+  color: #3498db;
+  width: 20px;
+}
+
+.footer-section a {
+  color: #7f8c8d;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: #3498db;
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-links a {
+  color: #7f8c8d;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #3498db;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1024px) {
+  .price-chart-footer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .price-chart-footer {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .footer-section {
+    text-align: center;
+  }
+
+  .footer-section p {
+    justify-content: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
+/* Dark theme styles */
+.dark-theme .price-chart-header h2 {
+  color: #ffffff;
+}
+
+.dark-theme .price-chart-header p {
+  color: #bdc3c7;
+}
+
+.dark-theme .category-dropdown {
+  background-color: #2d2d2d;
+  color: #ffffff;
+  border-color: #3498db;
+}
+
+.dark-theme .category-dropdown:hover,
+.dark-theme .category-dropdown:focus {
+  background-color: #3d3d3d;
+}
+
+.dark-theme .category-dropdown option {
+  background-color: #2d2d2d;
+  color: #ffffff;
+}
+
+.dark-theme .price-category {
+  background: #2d2d2d;
+  border-color: #4d4d4d;
+}
+
+.dark-theme .price-category h3 {
+  color: #ffffff;
+  border-bottom-color: #3498db;
+}
+
+.dark-theme .item-name {
+  color: #ffffff;
+}
+
+.dark-theme .price-note {
+  background: #2d2d2d;
+}
+
+.dark-theme .price-note p {
+  color: #bdc3c7;
+}
+
+.dark-theme .price-grid::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
+.dark-theme .price-chart-footer {
+  background-color: #2d2d2d;
+}
+
+.dark-theme .footer-section h4 {
+  color: #ffffff;
+  border-bottom-color: #3498db;
+}
+
+.dark-theme .footer-section p,
+.dark-theme .footer-section a {
+  color: #bdc3c7;
+}
+
+.dark-theme .footer-section a:hover {
+  color: #3498db;
+}
+
+.dark-theme .social-links a {
+  color: #bdc3c7;
+}
+
+.dark-theme .social-links a:hover {
+  color: #3498db;
+} 

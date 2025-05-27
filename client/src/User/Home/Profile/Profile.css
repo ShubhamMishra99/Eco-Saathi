@@ -1,0 +1,343 @@
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  background: #f8f9fa;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-avatar i {
+  font-size: 2.5rem;
+  color: #3498db;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-info h2 {
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+}
+
+.member-since {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.profile-header-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.edit-button {
+  padding: 0.75rem 1.5rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.edit-button:hover {
+  background: #2980b9;
+}
+
+.edit-button.cancel {
+  background: #e74c3c;
+}
+
+.edit-button.cancel:hover {
+  background: #c0392b;
+}
+
+.logout-button {
+  background: #e74c3c;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  justify-content: center;
+}
+
+.logout-button:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logout-button i {
+  font-size: 1.1rem;
+}
+
+.profile-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 2rem;
+}
+
+.form-section h3 {
+  color: #2c3e50;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.4rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #2c3e50;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.preferences-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.preference-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+
+.checkbox-label span {
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.preference-description {
+  color: #7f8c8d;
+  margin: 0;
+  font-size: 0.9rem;
+  padding-left: 2rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.save-button {
+  padding: 0.75rem 1.5rem;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.save-button:hover {
+  background: #219a52;
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .profile-header-actions {
+    width: 100%;
+  }
+}
+
+/* Dark theme styles */
+.dark-theme .profile-header {
+  background: #2d2d2d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .profile-avatar {
+  background: #3d3d3d;
+}
+
+.dark-theme .profile-avatar i {
+  color: #3498db;
+}
+
+.dark-theme .profile-info h2 {
+  color: #ffffff;
+}
+
+.dark-theme .member-since {
+  color: #bdc3c7;
+}
+
+.dark-theme .profile-content {
+  background: #2d2d2d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .form-section h3 {
+  color: #ffffff;
+}
+
+.dark-theme .form-group label {
+  color: #ffffff;
+}
+
+.dark-theme .form-group input,
+.dark-theme .form-group textarea {
+  background: #3d3d3d;
+  border-color: #4d4d4d;
+  color: #ffffff;
+}
+
+.dark-theme .form-group input:focus,
+.dark-theme .form-group textarea:focus {
+  border-color: #3498db;
+}
+
+.dark-theme .form-group input:disabled,
+.dark-theme .form-group textarea:disabled {
+  background: #2d2d2d;
+  color: #bdc3c7;
+}
+
+.dark-theme .checkbox-label span {
+  color: #ffffff;
+}
+
+.dark-theme .preference-description {
+  color: #bdc3c7;
+}
+
+.dark-theme .form-actions {
+  border-top-color: #4d4d4d;
+}
+
+/* Keep button styles consistent with the app's theme */
+.dark-theme .edit-button,
+.dark-theme .logout-button,
+.dark-theme .save-button {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-theme .edit-button:hover,
+.dark-theme .logout-button:hover,
+.dark-theme .save-button:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Custom checkbox styles for dark theme */
+.dark-theme .checkbox-label input[type="checkbox"] {
+  background-color: #3d3d3d;
+  border-color: #4d4d4d;
+}
+
+.dark-theme .checkbox-label input[type="checkbox"]:checked {
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+.dark-theme .checkbox-label input[type="checkbox"]:disabled {
+  background-color: #2d2d2d;
+  border-color: #4d4d4d;
+} 
