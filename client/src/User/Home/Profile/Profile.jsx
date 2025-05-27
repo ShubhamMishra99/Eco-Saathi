@@ -4,10 +4,10 @@ import './Profile.css';
 const Profile = ({ onLogout }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 234 567 8900',
-    address: '123 Main St, City, State 12345',
+    name: 'User Name',
+    email: 'user.name@example.com',
+    phone: '+91XXXXXXXXXX',
+    address: 'Phase 2,Electronic City,Bengaluru,Karnataka, India',
     preferences: {
       notifications: true,
       newsletter: false,
@@ -48,7 +48,7 @@ const Profile = ({ onLogout }) => {
         </div>
         <div className="profile-info">
           <h2>{formData.name}</h2>
-          <p className="member-since">Member since March 2024</p>
+          <p className="member-since">Member since March 2025</p>
         </div>
         <div className="profile-header-actions">
           <button
