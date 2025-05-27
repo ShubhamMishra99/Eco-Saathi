@@ -36,7 +36,7 @@ const Home = () => {
     <div className={`rider-home ${isDarkTheme ? 'dark-theme' : ''}`}>
       <nav className="rider-nav">
         <div className="nav-brand">
-          <h1>EasyScrap</h1>
+          <h1>Eco-Saathi</h1>
         </div>
         <div className="nav-links">
           <button 

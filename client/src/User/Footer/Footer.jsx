@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Contact Us</h4>
           <p><i className="fas fa-phone"></i> +91 1234567890</p>
-          <p><i className="fas fa-envelope"></i> support@easyscrap.com</p>
+          <p><i className="fas fa-envelope"></i> support@Eco-Saathi.com</p>
           <p><i className="fas fa-map-marker-alt"></i> Mumbai, Maharashtra</p>
         </div>
         
@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2024 EasyScrap. All rights reserved.</p>
+        <p>&copy; 2024 Eco-Saathi. All rights reserved.</p>
       </div>
     </footer>
   );

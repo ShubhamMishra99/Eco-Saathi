@@ -16,7 +16,7 @@ const Input = () => {
   return (
     <div className="home-container">
       <div className="role-selection">
-        <h1>Welcome to EasyScrap</h1>
+        <h1>Welcome to Eco-Saathi</h1>
         <p>Please select your role to continue</p>
         
         <div className="role-buttons">

@@ -45,7 +45,7 @@ const Home = () => {
     <div className={`user-home ${isDarkTheme ? 'dark-theme' : ''}`}>
       <nav className="user-nav">
         <div className="nav-brand">
-          <h1>EasyScrap</h1>
+          <h1>Eco-Saathi</h1>
         </div>
         <div className="nav-links">
           <button 

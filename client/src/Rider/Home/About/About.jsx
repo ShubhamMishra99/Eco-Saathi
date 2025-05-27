@@ -5,7 +5,7 @@ const About = () => {
   return (
     <div className="about-container">
       <div className="about-header">
-        <h2>About EasyScrap</h2>
+        <h2>About Eco-Saathi</h2>
         <p>Your trusted partner in sustainable waste management</p>
       </div>
 
@@ -16,7 +16,7 @@ const About = () => {
           </div>
           <h3>Our Mission</h3>
           <p>
-            At EasyScrap, we're committed to making waste management simple, efficient, and environmentally friendly. 
+            At Eco-Saathi, we're committed to making waste management simple, efficient, and environmentally friendly. 
             We connect scrap collectors with customers, ensuring proper recycling and disposal of materials.
           </p>
         </div>
