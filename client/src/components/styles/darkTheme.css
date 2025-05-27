@@ -1,0 +1,212 @@
+/* Dark Theme Variables */
+:root {
+  /* Base Colors */
+  --dark-bg-primary: #1a1a1a;
+  --dark-bg-secondary: #2d2d2d;
+  --dark-bg-tertiary: #333333;
+  
+  /* Text Colors */
+  --dark-text-primary: #ffffff;
+  --dark-text-secondary: #b0b0b0;
+  --dark-text-tertiary: #808080;
+  
+  /* Border Colors */
+  --dark-border-primary: #404040;
+  --dark-border-secondary: #4d4d4d;
+  
+  /* Accent Colors */
+  --dark-accent-primary: #64b5f6;
+  --dark-accent-secondary: #1976d2;
+  --dark-accent-danger: #ff5252;
+  --dark-accent-success: #4caf50;
+  
+  /* Shadow Colors */
+  --dark-shadow-primary: rgba(0, 0, 0, 0.2);
+  --dark-shadow-secondary: rgba(0, 0, 0, 0.3);
+  
+  /* Hover States */
+  --dark-hover-primary: rgba(100, 181, 246, 0.1);
+  --dark-hover-secondary: rgba(100, 181, 246, 0.15);
+}
+
+/* Dark Theme Base Styles */
+.dark-theme {
+  background-color: var(--dark-bg-primary);
+  color: var(--dark-text-primary);
+}
+
+/* Card Styles */
+.dark-theme .dashboard-card {
+  background: var(--dark-bg-secondary);
+  border: 1px solid var(--dark-border-primary);
+  box-shadow: 0 4px 12px var(--dark-shadow-primary);
+}
+
+.dark-theme .dashboard-card:hover {
+  box-shadow: 0 8px 24px var(--dark-shadow-secondary);
+}
+
+/* Header Styles */
+.dark-theme .dashboard-header {
+  background: var(--dark-bg-secondary);
+  border-bottom: 1px solid var(--dark-border-primary);
+}
+
+.dark-theme .dashboard-header h2 {
+  color: var(--dark-text-primary);
+}
+
+/* Navigation Styles */
+.dark-theme .nav-item {
+  color: var(--dark-text-secondary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme .nav-item:hover,
+.dark-theme .nav-item.active {
+  color: var(--dark-accent-primary);
+  background: var(--dark-hover-primary);
+}
+
+/* Form Elements */
+.dark-theme input,
+.dark-theme select,
+.dark-theme textarea {
+  background: var(--dark-bg-tertiary);
+  border-color: var(--dark-border-primary);
+  color: var(--dark-text-primary);
+}
+
+.dark-theme input:focus,
+.dark-theme select:focus,
+.dark-theme textarea:focus {
+  border-color: var(--dark-accent-primary);
+  box-shadow: 0 0 0 2px var(--dark-hover-primary);
+}
+
+.dark-theme input::placeholder {
+  color: var(--dark-text-tertiary);
+}
+
+/* Button Styles */
+.dark-theme .btn-primary {
+  background: var(--dark-accent-secondary);
+  color: var(--dark-text-primary);
+}
+
+.dark-theme .btn-secondary {
+  background: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme .btn-danger {
+  background: var(--dark-accent-danger);
+  color: var(--dark-text-primary);
+}
+
+/* Table Styles */
+.dark-theme table {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme th {
+  background: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme td {
+  border-color: var(--dark-border-primary);
+  color: var(--dark-text-secondary);
+}
+
+/* Status Badges */
+.dark-theme .status-badge {
+  background: var(--dark-bg-tertiary);
+  color: var(--dark-text-primary);
+}
+
+.dark-theme .status-badge.success {
+  background: var(--dark-accent-success);
+}
+
+.dark-theme .status-badge.danger {
+  background: var(--dark-accent-danger);
+}
+
+/* Modal Styles */
+.dark-theme .modal-content {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme .modal-header {
+  background: var(--dark-bg-tertiary);
+  border-bottom-color: var(--dark-border-primary);
+}
+
+/* Chart Styles */
+.dark-theme .chart-container {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-primary);
+}
+
+/* Profile Section */
+.dark-theme .profile-section {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme .profile-info {
+  color: var(--dark-text-secondary);
+}
+
+/* Earnings Section */
+.dark-theme .earnings-card {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme .earnings-amount {
+  color: var(--dark-accent-primary);
+}
+
+/* About Section */
+.dark-theme .about-section {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border-primary);
+}
+
+.dark-theme .about-text {
+  color: var(--dark-text-secondary);
+}
+
+/* Animations */
+.dark-theme .fade-in {
+  animation: darkFadeIn 0.3s ease;
+}
+
+@keyframes darkFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .dark-theme .dashboard-card {
+    margin: 0.5rem;
+  }
+  
+  .dark-theme .modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+} 

@@ -1,0 +1,203 @@
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.login-box {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.login-box h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.subtitle {
+  color: #34495e;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  color: #2c3e50;
+  background-color: white;
+}
+
+.form-group input::placeholder {
+  color: #95a5a6;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.forgot-password {
+  text-align: right;
+  margin-top: -10px;
+}
+
+.forgot-password a {
+  color: #3498db;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.submit-button {
+  background: #3498db;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background: #2980b9;
+}
+
+.toggle-form {
+  margin-top: 20px;
+  text-align: center;
+  color: #34495e;
+}
+
+.toggle-button {
+  background: none;
+  border: none;
+  color: #3498db;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0 5px;
+}
+
+.toggle-button:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .login-box {
+    padding: 20px;
+  }
+  
+  .login-box h1 {
+    font-size: 1.75rem;
+  }
+}
+
+.otp-form {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.otp-form h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.otp-form p {
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.demo-note {
+  color: #e74c3c !important;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.otp-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.resend-button {
+  background: none;
+  border: 1px solid #3498db;
+  color: #3498db;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.resend-button:hover {
+  background: #3498db;
+  color: white;
+}
+
+.verify-button {
+  background: #3498db;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.verify-button:hover {
+  background: #2980b9;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.resend-button:disabled,
+.verify-button:disabled,
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+} 
