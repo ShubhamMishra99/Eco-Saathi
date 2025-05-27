@@ -59,13 +59,13 @@ const Login = () => {
         type === 'email' ? formData.email : formData.phone,
         type === 'email' ? otpData.emailOtp : otpData.phoneOtp
       );
-      
+
       if (response.success) {
         if (type === 'email') {
           setOtpStep(2);
         } else {
-          // Both OTPs verified, proceed with signup
-          handleSignup();
+          // Proceed with signup after verifying phone OTP
+          await handleSignup();
         }
       } else {
         setError(response.message);
@@ -80,9 +80,19 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      navigate('/user/dashboard');
+      const response = await fetch('http://localhost:5000/api/users/signup', {  // Corrected endpoint here
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        navigate('/user/dashboard');
+      } else {
+        setError(data.message || 'Signup failed');
+      }
     } catch (error) {
       setError('Signup failed. Please try again.');
     }
@@ -91,12 +101,34 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+
     if (isLogin) {
-      // Handle login
-      console.log('User Login:', formData);
-      navigate('/user/dashboard');
+      // Login flow
+      setLoading(true);
+      try {
+        const response = await fetch('http://localhost:5000/api/users/login', {  // Corrected endpoint here
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password
+          })
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          localStorage.setItem('token', data.token);
+          navigate('/user/dashboard');
+        } else {
+          setError(data.message || 'Login failed');
+        }
+      } catch (error) {
+        setError('Login failed. Please try again.');
+      }
+      setLoading(false);
     } else {
-      // Start signup process with email OTP
+      // Signup flow starts with email OTP
       await sendOtp('email');
     }
   };
@@ -284,4 +316,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;
