@@ -34,7 +34,7 @@ const Footer = () => {
             </li>
             <li>
               <i className="fas fa-envelope"></i>
-              <span>support@easyscrap.com</span>
+              <span>support@Eco-Saathi.com</span>
             </li>
             <li>
               <i className="fas fa-map-marker-alt"></i>
@@ -63,7 +63,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; 2024 EasyScrap. All rights reserved.</p>
+        <p>&copy; 2024 Eco-Saathi. All rights reserved.</p>
         <div className="footer-bottom-links">
           <a href="#">Terms</a>
           <a href="#">Privacy</a>

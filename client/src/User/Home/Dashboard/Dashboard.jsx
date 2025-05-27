@@ -37,7 +37,7 @@ const Dashboard = ({ setActiveTab }) => {
 
       <div className="about-section">
         <div className="about-header">
-          <h2>About EasyScrap</h2>
+          <h2>About Eco-Saathi</h2>
           <p className="mission-statement">Making waste management easy, efficient, and environmentally friendly.</p>
         </div>
 
