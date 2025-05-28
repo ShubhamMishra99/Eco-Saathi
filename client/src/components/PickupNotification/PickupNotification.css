@@ -1,0 +1,197 @@
+.notification-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+.notification-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: slideIn 0.3s ease;
+  transform-origin: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.notification-content h3 {
+  color: #2c3e50;
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pickup-details {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #7f8c8d;
+  padding: 0.5rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: background-color 0.3s ease;
+}
+
+.detail-item:hover {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.detail-item i {
+  color: #3498db;
+  width: 20px;
+  text-align: center;
+}
+
+.notification-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.notification-actions button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.notification-actions button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.accept-btn {
+  background: rgba(39, 174, 96, 0.9);
+  color: white;
+}
+
+.accept-btn:hover:not(:disabled) {
+  background: rgba(33, 154, 82, 1);
+  transform: translateY(-2px);
+}
+
+.decline-btn {
+  background: rgba(231, 76, 60, 0.9);
+  color: white;
+}
+
+.decline-btn:hover:not(:disabled) {
+  background: rgba(192, 57, 43, 1);
+  transform: translateY(-2px);
+}
+
+.later-btn {
+  background: rgba(248, 249, 250, 0.9);
+  color: #7f8c8d;
+  border: 1px solid rgba(224, 224, 224, 0.5);
+}
+
+.later-btn:hover:not(:disabled) {
+  background: rgba(233, 236, 239, 1);
+  transform: translateY(-2px);
+}
+
+.error-message {
+  background: rgba(255, 235, 238, 0.9);
+  color: #e74c3c;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(5px);
+}
+
+/* Dark theme support */
+.dark-theme .notification-content {
+  background: rgba(45, 45, 45, 0.95);
+}
+
+.dark-theme .notification-content h3 {
+  color: #ffffff;
+}
+
+.dark-theme .detail-item {
+  color: #bdc3c7;
+  background: rgba(45, 45, 45, 0.5);
+}
+
+.dark-theme .detail-item:hover {
+  background: rgba(45, 45, 45, 0.8);
+}
+
+.dark-theme .later-btn {
+  background: rgba(61, 61, 61, 0.9);
+  border-color: rgba(77, 77, 77, 0.5);
+  color: #bdc3c7;
+}
+
+.dark-theme .later-btn:hover:not(:disabled) {
+  background: rgba(77, 77, 77, 1);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .notification-content {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .notification-actions {
+    flex-direction: column;
+  }
+
+  .notification-actions button {
+    width: 100%;
+  }
+} 

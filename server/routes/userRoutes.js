@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { signup, login } = require('../controllers/userController');
+const { signup, login, schedulePickup, getPickups } = require('../controllers/userController');
+const auth = require('../middleware/auth');
 
-// Routes
+// Public routes
 router.post('/signup', signup);
 router.post('/login', login);
+
+// Protected routes
+router.post('/schedule-pickup', auth, schedulePickup);
+router.get('/pickups', auth, getPickups);
 
 module.exports = router;

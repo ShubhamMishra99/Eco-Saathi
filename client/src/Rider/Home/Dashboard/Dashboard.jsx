@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { usePickup } from '../../../components/context/PickupContext';
 import './Dashboard.css';
 
+const API_BASE_URL = 'http://localhost:5000';
+
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [isAvailable, setIsAvailable] = useState(true);
   const [dashboardData, setDashboardData] = useState({
     todayEarnings: 0.00,
@@ -10,14 +15,250 @@ const Dashboard = () => {
     totalEarnings: 0.00,
     recentOrders: []
   });
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [completionData, setCompletionData] = useState({
+    actualQuantity: '',
+    notes: ''
+  });
+
+  const { 
+    livePickups,
+    setIsAvailable: setPickupAvailable,
+    currentPickup,
+    showNotificationModal,
+    setShowNotificationModal,
+    handleAcceptPickup,
+    handleDeclinePickup,
+    handleCompletePickup,
+    isLoading: isPickupLoading,
+    error: pickupError,
+    showCompletionModal,
+    setShowCompletionModal,
+    selectedPickup,
+    setSelectedPickup
+  } = usePickup();
+
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('riderToken');
+    return {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    };
+  };
+
+  const handleAuthError = () => {
+    localStorage.removeItem('riderToken');
+    navigate('/login');
+  };
 
   const handleAvailabilityToggle = () => {
-    setIsAvailable(!isAvailable);
-    // TODO: Add API call to update rider availability
+    const newAvailability = !isAvailable;
+    setIsAvailable(newAvailability);
+    setPickupAvailable(newAvailability);
   };
+
+  const handleCompleteClick = (order) => {
+    // Make sure we have the pickup data
+    if (!order.pickup) {
+      setError('Pickup data not found');
+      return;
+    }
+    
+    setSelectedPickup(order);
+    setCompletionData({
+      actualQuantity: '',
+      notes: ''
+    });
+    setShowCompletionModal(true);
+  };
+
+  const handleCompletionSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Validate actual quantity is a number
+      const actualQuantity = parseFloat(completionData.actualQuantity);
+      if (isNaN(actualQuantity) || actualQuantity <= 0) {
+        setError('Please enter a valid number for actual quantity');
+        return;
+      }
+
+      await handleCompletePickup(selectedPickup, {
+        ...completionData,
+        actualQuantity: actualQuantity
+      });
+      // Refresh dashboard data after completion
+      fetchDashboardData();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleQuantityChange = (e) => {
+    const value = e.target.value;
+    // Allow only numbers and decimal point
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      setCompletionData(prev => ({
+        ...prev,
+        actualQuantity: value
+      }));
+    }
+  };
+
+  const fetchDashboardData = async () => {
+    try {
+      setIsLoading(true);
+      const token = localStorage.getItem('riderToken');
+      if (!token) {
+        handleAuthError();
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/riders/orders`, {
+        headers: getAuthHeaders()
+      });
+
+      if (response.status === 401) {
+        handleAuthError();
+        return;
+      }
+
+      if (response.ok) {
+        const orders = await response.json();
+        setDashboardData(prev => ({
+          ...prev,
+          recentOrders: orders
+        }));
+      } else {
+        const data = await response.json();
+        throw new Error(data.message || 'Failed to fetch orders');
+      }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [navigate]);
 
   return (
     <div className="dashboard-content">
+      {/* Notification Modal */}
+      {showNotificationModal && currentPickup && (
+        <div className="notification-modal-overlay">
+          <div className="notification-modal">
+            <div className="notification-header">
+              <h3>🚨 New Pickup Request</h3>
+            </div>
+            <div className="notification-body">
+              <div className="pickup-details">
+                <p><strong>Scrap Type:</strong> {currentPickup.scrapType}</p>
+                <p><strong>Quantity:</strong> {currentPickup.quantity}</p>
+                <p><strong>Address:</strong> {currentPickup.address}</p>
+                <p><strong>Preferred Date:</strong> {new Date(currentPickup.preferredDate).toLocaleDateString()}</p>
+                <p><strong>Preferred Time:</strong> {currentPickup.preferredTime}</p>
+                {currentPickup.notes && (
+                  <p><strong>Notes:</strong> {currentPickup.notes}</p>
+                )}
+              </div>
+              {(error || pickupError) && (
+                <div className="error-message">
+                  {error || pickupError}
+                </div>
+              )}
+              <div className="notification-actions">
+                <button 
+                  className="decline-btn" 
+                  onClick={handleDeclinePickup}
+                  disabled={isPickupLoading}
+                >
+                  {isPickupLoading ? 'Declining...' : 'Decline'}
+                </button>
+                <button 
+                  className="accept-btn" 
+                  onClick={handleAcceptPickup}
+                  disabled={isPickupLoading}
+                >
+                  {isPickupLoading ? 'Accepting...' : 'Accept'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Completion Modal */}
+      {showCompletionModal && selectedPickup && selectedPickup.pickup && (
+        <div className="notification-modal-overlay">
+          <div className="notification-modal">
+            <div className="notification-header">
+              <h3>✅ Complete Pickup</h3>
+            </div>
+            <div className="notification-body">
+              <form onSubmit={handleCompletionSubmit}>
+                <div className="pickup-details">
+                  <p><strong>Scrap Type:</strong> {selectedPickup.pickup.scrapType}</p>
+                  <p><strong>Expected Quantity:</strong> {selectedPickup.pickup.quantity}</p>
+                  <div className="form-group">
+                    <label htmlFor="actualQuantity">Actual Quantity (kg):</label>
+                    <input
+                      type="text"
+                      id="actualQuantity"
+                      value={completionData.actualQuantity}
+                      onChange={handleQuantityChange}
+                      placeholder="Enter weight in kg"
+                      pattern="\d*\.?\d*"
+                      title="Please enter a valid number"
+                      required
+                    />
+                    <small className="form-help">Enter the actual weight in kilograms (e.g., 5.5)</small>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="notes">Additional Notes:</label>
+                    <textarea
+                      id="notes"
+                      value={completionData.notes}
+                      onChange={(e) => setCompletionData(prev => ({
+                        ...prev,
+                        notes: e.target.value
+                      }))}
+                      rows={3}
+                    />
+                  </div>
+                </div>
+                {(error || pickupError) && (
+                  <div className="error-message">
+                    {error || pickupError}
+                  </div>
+                )}
+                <div className="notification-actions">
+                  <button 
+                    type="button"
+                    className="decline-btn" 
+                    onClick={() => setShowCompletionModal(false)}
+                    disabled={isPickupLoading}
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="submit"
+                    className="accept-btn"
+                    disabled={isPickupLoading}
+                  >
+                    {isPickupLoading ? 'Completing...' : 'Complete Pickup'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 🟢 Availability */}
       <div className="status-card">
         <h2>Current Status</h2>
         <div className="status-content">
@@ -35,38 +276,47 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* 🔴 Real-Time Pickup Requests */}
+      {livePickups.length > 0 && (
+        <div className="live-pickups">
+          <h2>🚨 New Pickup Requests</h2>
+          <ul>
+            {livePickups.map((pickup) => (
+              <li key={pickup._id} className="pickup-alert">
+                <strong>{pickup.scrapType}</strong> - {pickup.quantity}<br />
+                <em>{pickup.address}</em><br />
+                {new Date(pickup.preferredDate).toLocaleDateString()} @ {pickup.preferredTime}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* 🔢 Metrics */}
       <div className="dashboard-grid">
         <div className="dashboard-card">
-          <div className="card-icon">
-            <i className="fas fa-rupee-sign"></i>
-          </div>
+          <div className="card-icon"><i className="fas fa-rupee-sign"></i></div>
           <div className="card-content">
             <h3>Today's Earnings</h3>
             <p className="amount">₹{dashboardData.todayEarnings.toFixed(2)}</p>
           </div>
         </div>
         <div className="dashboard-card">
-          <div className="card-icon">
-            <i className="fas fa-clock"></i>
-          </div>
+          <div className="card-icon"><i className="fas fa-clock"></i></div>
           <div className="card-content">
             <h3>Pending Pickups</h3>
             <p className="count">{dashboardData.pendingPickups}</p>
           </div>
         </div>
         <div className="dashboard-card">
-          <div className="card-icon">
-            <i className="fas fa-check-circle"></i>
-          </div>
+          <div className="card-icon"><i className="fas fa-check-circle"></i></div>
           <div className="card-content">
             <h3>Completed Today</h3>
             <p className="count">{dashboardData.completedToday}</p>
           </div>
         </div>
         <div className="dashboard-card">
-          <div className="card-icon">
-            <i className="fas fa-wallet"></i>
-          </div>
+          <div className="card-icon"><i className="fas fa-wallet"></i></div>
           <div className="card-content">
             <h3>Total Earnings</h3>
             <p className="amount">₹{dashboardData.totalEarnings.toFixed(2)}</p>
@@ -74,28 +324,34 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* 📦 Recent Orders */}
       <div className="recent-orders">
         <div className="section-header">
           <h2>Recent Orders</h2>
           <button className="view-all-button">
-            View All
-            <i className="fas fa-arrow-right"></i>
+            View All <i className="fas fa-arrow-right"></i>
           </button>
         </div>
         <div className="orders-list">
           {dashboardData.recentOrders.length > 0 ? (
             dashboardData.recentOrders.map((order) => (
-              <div key={order.id} className="order-card">
+              <div key={order._id} className="order-card">
                 <div className="order-info">
-                  <h3>Order #{order.id}</h3>
+                  <h3>Order #{order._id}</h3>
                   <p className="order-address">{order.address}</p>
-                  <p className="order-time">{order.time}</p>
+                  <p className="order-time">{new Date(order.createdAt).toLocaleString()}</p>
                 </div>
                 <div className="order-status">
-                  <span className={`status-badge ${order.status.toLowerCase()}`}>
-                    {order.status}
-                  </span>
-                  <p className="order-amount">₹{order.amount.toFixed(2)}</p>
+                  <span className={`status-badge ${order.status.toLowerCase()}`}>{order.status}</span>
+                  <p className="order-amount">₹{order.amount ? order.amount.toFixed(2) : '0.00'}</p>
+                  {order.status === 'accepted' && (
+                    <button 
+                      className="complete-btn"
+                      onClick={() => handleCompleteClick(order)}
+                    >
+                      Complete Pickup
+                    </button>
+                  )}
                 </div>
               </div>
             ))
@@ -107,102 +363,8 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-
-      <div className="about-section" id="about-section">
-        <div className="about-header">
-          <h2>About Eco-Saathi</h2>
-          <p>Your trusted partner in sustainable waste management</p>
-        </div>
-
-        <div className="about-content">
-          <div className="about-card">
-            <div className="section-icon">
-              <i className="fas fa-recycle"></i>
-            </div>
-            <h3>Our Mission</h3>
-            <p>
-              At Eco-Saathi, we're committed to making waste management simple, efficient, and environmentally friendly. 
-              We connect scrap collectors with customers, ensuring proper recycling and disposal of materials.
-            </p>
-          </div>
-
-          <div className="about-card">
-            <div className="section-icon">
-              <i className="fas fa-truck"></i>
-            </div>
-            <h3>For Riders</h3>
-            <p>
-              As a rider, you play a crucial role in our mission. You help collect and transport recyclable materials, 
-              ensuring they reach the right processing facilities. We provide you with the tools and support needed 
-              to manage your pickups efficiently.
-            </p>
-          </div>
-
-          <div className="about-card">
-            <div className="section-icon">
-              <i className="fas fa-handshake"></i>
-            </div>
-            <h3>Our Commitment</h3>
-            <p>
-              We're dedicated to providing a reliable and transparent service. Our platform ensures fair compensation 
-              for riders and convenient service for customers, all while promoting environmental sustainability.
-            </p>
-          </div>
-
-          <div className="about-card">
-            <div className="section-icon">
-              <i className="fas fa-shield-alt"></i>
-            </div>
-            <h3>Safety & Quality</h3>
-            <p>
-              Your safety is our priority. We maintain strict quality standards and provide necessary training to ensure 
-              safe handling of materials. Our platform includes features for tracking and managing pickups securely.
-            </p>
-          </div>
-        </div>
-
-        <div className="about-stats">
-          <div className="stat-item">
-            <i className="fas fa-users"></i>
-            <div className="stat-info">
-              <h4>Active Riders</h4>
-              <p>500+</p>
-            </div>
-          </div>
-          <div className="stat-item">
-            <i className="fas fa-map-marker-alt"></i>
-            <div className="stat-info">
-              <h4>Cities Covered</h4>
-              <p>25+</p>
-            </div>
-          </div>
-          <div className="stat-item">
-            <i className="fas fa-truck-loading"></i>
-            <div className="stat-info">
-              <h4>Daily Pickups</h4>
-              <p>1000+</p>
-            </div>
-          </div>
-          <div className="stat-item">
-            <i className="fas fa-leaf"></i>
-            <div className="stat-info">
-              <h4>Tons Recycled</h4>
-              <p>5000+</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="about-contact">
-          <h3>Need Help?</h3>
-          <p>Our support team is available 24/7 to assist you with any questions or concerns.</p>
-          <button className="contact-button">
-            <i className="fas fa-headset"></i>
-            Contact Support
-          </button>
-        </div>
-      </div>
     </div>
   );
 };
 
-export default Dashboard; 
+export default Dashboard;

@@ -2,12 +2,28 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const http = require('http'); // <-- Required for socket.io
+const { Server } = require('socket.io'); // <-- Import socket.io
 const userRoutes = require('./routes/userRoutes');
 const riderRoutes = require('./routes/riderRoutes');
+const { setSocketInstance } = require('./controllers/userController'); // <-- Import socket handler
 
 dotenv.config();
 const app = express();
+const server = http.createServer(app); // <-- Create HTTP server
 
+// Setup Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
+});
+
+// Pass io instance to controller
+setSocketInstance(io);
+
+// Middleware
 app.use(cors());
 app.use(express.json());
 
@@ -25,6 +41,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/easyscrap
   console.error('MongoDB connection error:', err);
 });
 
+// Socket.io connection listener (optional, for logging)
+io.on('connection', (socket) => {
+  console.log('Rider client connected:', socket.id);
+});
+
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));

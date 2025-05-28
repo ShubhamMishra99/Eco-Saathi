@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 import './RequestPickup.css';
+
+const API_BASE_URL = 'http://localhost:5000';
+const socket = io(API_BASE_URL);
 
 const RequestPickup = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +17,28 @@ const RequestPickup = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    // Listen for pickup status updates
+    socket.on('pickup-status-update', (update) => {
+      if (update.status === 'accepted') {
+        setNotification({
+          type: 'success',
+          message: 'A rider has accepted your pickup request! They will contact you shortly.'
+        });
+      } else if (update.status === 'declined') {
+        setNotification({
+          type: 'info',
+          message: 'The rider was unable to accept your request. Another rider will be notified.'
+        });
+      }
+    });
+
+    return () => {
+      socket.off('pickup-status-update');
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,20 +52,45 @@ const RequestPickup = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setSubmitSuccess(true);
-      setFormData({
-        address: '',
-        scrapType: '',
-        quantity: '',
-        preferredDate: '',
-        preferredTime: '',
-        notes: ''
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Authentication required. Please login again.');
+      }
+
+      const res = await fetch(`${API_BASE_URL}/api/users/schedule-pickup`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(formData)
       });
+
+      if (res.ok) {
+        setSubmitSuccess(true);
+        setFormData({
+          address: '',
+          scrapType: '',
+          quantity: '',
+          preferredDate: '',
+          preferredTime: '',
+          notes: ''
+        });
+        setNotification({
+          type: 'success',
+          message: 'Pickup request submitted successfully! Notifying nearby riders...'
+        });
+      } else {
+        const errorData = await res.json();
+        throw new Error(errorData.message || 'Failed to schedule pickup');
+      }
     } catch (error) {
       console.error('Error submitting request:', error);
+      setNotification({
+        type: 'error',
+        message: error.message
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -52,6 +103,23 @@ const RequestPickup = () => {
         <p>Fill out the form below to schedule a pickup of your recyclable materials.</p>
       </div>
 
+      {notification && (
+        <div className={`notification ${notification.type}`}>
+          <i className={`fas ${
+            notification.type === 'success' ? 'fa-check-circle' : 
+            notification.type === 'error' ? 'fa-exclamation-circle' : 
+            'fa-info-circle'
+          }`}></i>
+          <p>{notification.message}</p>
+          <button 
+            className="close-notification"
+            onClick={() => setNotification(null)}
+          >
+            <i className="fas fa-times"></i>
+          </button>
+        </div>
+      )}
+
       {submitSuccess ? (
         <div className="success-message">
           <i className="fas fa-check-circle"></i>
@@ -59,7 +127,10 @@ const RequestPickup = () => {
           <p>We'll contact you shortly to confirm your pickup details.</p>
           <button 
             className="new-request-button"
-            onClick={() => setSubmitSuccess(false)}
+            onClick={() => {
+              setSubmitSuccess(false);
+              setNotification(null);
+            }}
           >
             Make Another Request
           </button>

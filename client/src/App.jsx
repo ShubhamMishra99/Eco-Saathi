@@ -6,7 +6,19 @@ import RiderLogin from './Rider/Login/Login';
 import RiderHome from './Rider/Home/Home';
 import UserHome from './User/Home/Home';
 import { ThemeProvider } from './components/context/ThemeContext';
+import { PickupProvider } from './components/context/PickupContext';
+import PickupNotification from './components/PickupNotification/PickupNotification';
 import './components/styles/global.css';
+
+// Wrapper component for rider routes
+const RiderRouteWrapper = ({ children }) => {
+  return (
+    <PickupProvider>
+      {children}
+      <PickupNotification />
+    </PickupProvider>
+  );
+};
 
 const AppContent = () => {
   return (
@@ -14,9 +26,17 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<Input />} />
         <Route path="/user/login" element={<UserLogin />} />
-        <Route path="/rider/login" element={<RiderLogin />} />
         <Route path="/user/dashboard" element={<UserHome />} />
-        <Route path="/rider/dashboard" element={<RiderHome />} />
+        
+        {/* Rider routes wrapped with PickupProvider */}
+        <Route path="/rider/*" element={
+          <RiderRouteWrapper>
+            <Routes>
+              <Route path="login" element={<RiderLogin />} />
+              <Route path="dashboard" element={<RiderHome />} />
+            </Routes>
+          </RiderRouteWrapper>
+        } />
       </Routes>
     </Router>
   );
