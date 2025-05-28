@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+  const [profilePhoto, setProfilePhoto] = useState(() => {
+    // Initialize from localStorage if available
+    const savedPhoto = localStorage.getItem('riderProfilePhoto');
+    return savedPhoto || null;
+  });
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const [tempPhoto, setTempPhoto] = useState(null);
+  const [originalPhoto, setOriginalPhoto] = useState(null);
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
     // Check if user has a theme preference in localStorage
     const savedTheme = localStorage.getItem('theme');
@@ -61,6 +70,21 @@ const Profile = () => {
     };
   }, [showRatingModal, showPickupModal]);
 
+  useEffect(() => {
+    if (isEditing) {
+      setOriginalPhoto(profilePhoto);
+    }
+  }, [isEditing]);
+
+  // Save photo to localStorage whenever it changes
+  useEffect(() => {
+    if (profilePhoto) {
+      localStorage.setItem('riderProfilePhoto', profilePhoto);
+    } else {
+      localStorage.removeItem('riderProfilePhoto');
+    }
+  }, [profilePhoto]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedData(prevState => ({
@@ -77,8 +101,9 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    // TODO: Add logout logic
-    navigate('/rider/login');
+    localStorage.removeItem('riderToken');
+    localStorage.removeItem('rider');
+    navigate('/');
   };
 
   const renderStars = (rating) => {
@@ -120,11 +145,80 @@ const Profile = () => {
     setIsDarkTheme(prev => !prev);
   };
 
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setTempPhoto(e.target.result);
+          // TODO: Add API call to upload photo to server
+        };
+        reader.readAsDataURL(file);
+      } else {
+        alert('Please upload an image file');
+      }
+    }
+  };
+
+  const handleRemovePhoto = (e) => {
+    e.stopPropagation();
+    setTempPhoto(null);
+    // TODO: Add API call to remove photo from server
+  };
+
+  const handleSavePhoto = () => {
+    setProfilePhoto(tempPhoto);
+    setShowPhotoModal(false);
+  };
+
+  const handleCancelPhoto = () => {
+    setTempPhoto(profilePhoto);
+    setShowPhotoModal(false);
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setEditedData({...profileData});
+    setProfilePhoto(originalPhoto);
+    setTempPhoto(originalPhoto);
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+  useEffect(() => {
+    if (showPhotoModal) {
+      setTempPhoto(profilePhoto);
+    }
+  }, [showPhotoModal, profilePhoto]);
+
   return (
     <div className="profile-section">
       <div className="profile-header">
-        <div className="profile-avatar">
-          <i className="fas fa-user"></i>
+        <div 
+          className={`profile-avatar ${isEditing ? 'editable' : ''}`} 
+          onClick={isEditing ? () => setShowPhotoModal(true) : undefined}
+        >
+          {profilePhoto ? (
+            <img src={profilePhoto} alt="Profile" className="profile-photo" />
+          ) : (
+            <i className="fas fa-user"></i>
+          )}
+          {isEditing && (
+            <div className="photo-upload-overlay">
+              <i className="fas fa-camera"></i>
+              <span>{profilePhoto ? 'Change Photo' : 'Add Photo'}</span>
+            </div>
+          )}
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handlePhotoUpload}
+            accept="image/*"
+            style={{ display: 'none' }}
+          />
         </div>
         <div className="profile-info">
           <h2>{profileData.name}</h2>
@@ -132,15 +226,8 @@ const Profile = () => {
         </div>
         <div className="header-buttons">
           <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            title={isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
-          >
-            <i className={`fas fa-${isDarkTheme ? 'sun' : 'moon'}`}></i>
-          </button>
-          <button
             className={`edit-button ${isEditing ? 'cancel' : ''}`}
-            onClick={() => setIsEditing(!isEditing)}
+            onClick={isEditing ? handleCancel : () => setIsEditing(true)}
           >
             <i className={`fas fa-${isEditing ? 'times' : 'edit'}`}></i>
             {isEditing ? 'Cancel' : 'Edit Profile'}
@@ -400,6 +487,48 @@ const Profile = () => {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Photo Modal */}
+      {showPhotoModal && (
+        <div className="modal-overlay" onClick={handleCancelPhoto}>
+          <div className="modal-content photo-modal" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Profile Photo</h3>
+              <button className="close-button" onClick={handleCancelPhoto}>
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="photo-preview">
+                {tempPhoto ? (
+                  <img src={tempPhoto} alt="Profile" className="preview-photo" />
+                ) : (
+                  <div className="no-photo">
+                    <i className="fas fa-user"></i>
+                    <span>No Photo</span>
+                  </div>
+                )}
+              </div>
+              <div className="photo-actions">
+                <button className="photo-action-btn change-photo" onClick={triggerFileInput}>
+                  <i className="fas fa-camera"></i>
+                  <span>{tempPhoto ? 'Change Photo' : 'Add Photo'}</span>
+                </button>
+                {tempPhoto && (
+                  <button className="photo-action-btn remove-photo" onClick={handleRemovePhoto}>
+                    <i className="fas fa-trash"></i>
+                    <span>Remove Photo</span>
+                  </button>
+                )}
+                <button className="photo-action-btn save-photo" onClick={handleSavePhoto}>
+                  <i className="fas fa-save"></i>
+                  <span>Save Changes</span>
+                </button>
               </div>
             </div>
           </div>
