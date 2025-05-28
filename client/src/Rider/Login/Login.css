@@ -1,93 +1,120 @@
+:root {
+  --bg-color: #f5f5f5;
+  --box-bg: white;
+  --text-color: #333;
+  --text-secondary: #666;
+  --border-color: #ddd;
+  --primary-color: #4CAF50;
+  --primary-hover: #45a049;
+  --error-color: #dc3545;
+  --shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --box-bg: #2d2d2d;
+  --text-color: #ffffff;
+  --text-secondary: #b3b3b3;
+  --border-color: #404040;
+  --primary-color: #66bb6a;
+  --primary-hover: #81c784;
+  --error-color: #ef5350;
+  --shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
 .login-container {
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  background-color: var(--bg-color);
   padding: 20px;
+  transition: background-color 0.3s ease;
 }
 
 .login-box {
-  background: white;
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background: var(--box-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
+  transition: all 0.3s ease;
 }
 
 .login-box h1 {
-  color: #2c3e50;
-  margin-bottom: 10px;
-  font-size: 2rem;
   text-align: center;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  transition: color 0.3s ease;
 }
 
 .subtitle {
-  color: #34495e;
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
 .form-group label {
-  color: #2c3e50;
-  font-weight: 500;
+  color: var(--text-color);
   font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .form-group input,
 .form-group select {
-  padding: 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
-  background-color: white;
-  color: #2c3e50;
-}
-
-.form-group input::placeholder {
-  color: #95a5a6;
-}
-
-.form-group select {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  padding-right: 40px;
+  background-color: var(--box-bg);
+  color: var(--text-color);
+  transition: all 0.3s ease;
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #2ecc71;
+  border-color: var(--primary-color);
+}
+
+.form-group input::placeholder {
+  color: var(--text-secondary);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0.5rem 0;
 }
 
 .forgot-password {
   text-align: right;
-  margin-top: -10px;
+  margin: 0.5rem 0;
 }
 
 .forgot-password a {
-  color: #2ecc71;
+  color: var(--primary-color);
   text-decoration: none;
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 
 .forgot-password a:hover {
@@ -95,109 +122,58 @@
 }
 
 .submit-button {
-  background: #2ecc71;
+  background-color: var(--primary-color);
   color: white;
-  padding: 12px;
+  padding: 0.8rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   font-size: 1rem;
-  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .submit-button:hover {
-  background: #27ae60;
+  background-color: var(--primary-hover);
+}
+
+.submit-button:disabled {
+  background-color: var(--text-secondary);
+  cursor: not-allowed;
 }
 
 .toggle-form {
-  margin-top: 20px;
   text-align: center;
-  color: #34495e;
+  margin-top: 1.5rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .toggle-button {
   background: none;
   border: none;
-  color: #2ecc71;
-  font-weight: 500;
+  color: var(--primary-color);
   cursor: pointer;
-  padding: 0 5px;
+  font-size: 0.9rem;
+  padding: 0;
+  margin-left: 0.5rem;
+  transition: color 0.3s ease;
 }
 
 .toggle-button:hover {
   text-decoration: underline;
 }
 
-.otp-form {
-  text-align: center;
-  padding: 20px 0;
-}
-
-.otp-form h2 {
-  color: #2c3e50;
-  margin-bottom: 10px;
-  font-size: 1.5rem;
-}
-
-.otp-form p {
-  color: #7f8c8d;
-  margin-bottom: 20px;
-}
-
-.otp-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.resend-button {
-  background: none;
-  border: 1px solid #2ecc71;
-  color: #2ecc71;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.resend-button:hover {
-  background: #2ecc71;
-  color: white;
-}
-
-.verify-button {
-  background: #2ecc71;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.verify-button:hover {
-  background: #27ae60;
-}
-
-.resend-button:disabled,
-.verify-button:disabled,
-.submit-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
 @media (max-width: 480px) {
   .login-box {
-    padding: 20px;
+    padding: 1.5rem;
   }
-  
+
   .login-box h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 0.7rem;
   }
 } 

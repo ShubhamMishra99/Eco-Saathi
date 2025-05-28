@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../context/AuthContext';
 import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { isDarkTheme } = useTheme();
+  const { login, isAuthenticated, userType } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
@@ -17,6 +21,13 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated && userType === 'rider') {
+      navigate('/rider/dashboard', { replace: true });
+    }
+  }, [isAuthenticated, userType, navigate]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -24,21 +35,20 @@ const Login = () => {
     });
   };
 
-  // Signup API call (without OTP)
+  // Signup API call
   const handleSignup = async () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/riders/signup', {
+      const res = await fetch('http://localhost:5001/api/riders/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
       const data = await res.json();
       if (res.ok && data.success) {
-        localStorage.setItem('riderToken', data.token);
-        localStorage.setItem('rider', JSON.stringify(data.rider));
-        navigate('/rider/dashboard');
+        login(data.token, 'rider');
+        navigate('/rider/dashboard', { replace: true });
       } else {
         setError(data.message || 'Signup failed');
       }
@@ -53,7 +63,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch('http://localhost:5000/api/riders/login', {
+      const res = await fetch('http://localhost:5001/api/riders/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -63,9 +73,8 @@ const Login = () => {
       });
       const data = await res.json();
       if (res.ok && data.token) {
-        localStorage.setItem('riderToken', data.token);
-        localStorage.setItem('rider', JSON.stringify(data.rider));
-        navigate('/rider/dashboard');
+        login(data.token, 'rider');
+        navigate('/rider/dashboard', { replace: true });
       } else {
         setError(data.message || 'Login failed');
       }
@@ -85,7 +94,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
+    <div className={`login-container ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
       <div className="login-box">
         <h1>{isLogin ? 'Welcome Back, Rider!' : 'Join as a Rider'}</h1>
         <p className="subtitle">

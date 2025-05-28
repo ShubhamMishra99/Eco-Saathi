@@ -8,7 +8,14 @@ const riderRoutes = require('./routes/riderRoutes');
 dotenv.config();
 const app = express();
 
-app.use(cors());
+// CORS configuration
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://localhost:5174'], // Allow both Vite default ports
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Routes
@@ -26,5 +33,5 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/easyscrap
 });
 
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

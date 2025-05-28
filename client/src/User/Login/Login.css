@@ -1,33 +1,75 @@
+/* Theme variables */
+:root {
+  /* Light theme variables */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7fa;
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --border-color: #e0e0e0;
+  --input-bg: #ffffff;
+  --input-border: #e0e0e0;
+  --input-text: #2c3e50;
+  --button-primary: #3498db;
+  --button-hover: #2980b9;
+  --error-color: #e74c3c;
+  --link-color: #3498db;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --gradient-start: #f5f7fa;
+  --gradient-end: #c3cfe2;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --border-color: #404040;
+  --input-bg: #2d2d2d;
+  --input-border: #404040;
+  --input-text: #ffffff;
+  --button-primary: #3498db;
+  --button-hover: #2980b9;
+  --error-color: #e74c3c;
+  --link-color: #3498db;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --gradient-start: #2d2d2d;
+  --gradient-end: #1a1a1a;
+}
+
 .login-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
   padding: 20px;
 }
 
 .login-box {
-  background: white;
+  background: var(--bg-primary);
   padding: 40px;
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px var(--shadow-color);
   width: 100%;
-  max-width: 450px;
+  max-width: 500px;
+  transition: all 0.3s ease;
 }
 
 .login-box h1 {
-  color: #2c3e50;
+  color: var(--text-primary);
   margin-bottom: 10px;
   font-size: 2rem;
   text-align: center;
+  transition: color 0.3s ease;
 }
 
 .subtitle {
-  color: #34495e;
+  color: var(--text-secondary);
   text-align: center;
   margin-bottom: 30px;
   font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 .login-form {
@@ -43,28 +85,36 @@
 }
 
 .form-group label {
-  color: #2c3e50;
+  color: var(--text-primary);
   font-weight: 500;
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 
 .form-group input {
   padding: 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   font-size: 1rem;
-  transition: border-color 0.3s ease;
-  color: #2c3e50;
-  background-color: white;
+  transition: all 0.3s ease;
+  background-color: var(--input-bg);
+  color: var(--input-text);
 }
 
 .form-group input::placeholder {
-  color: #95a5a6;
+  color: var(--text-secondary);
 }
 
 .form-group input:focus {
   outline: none;
-  border-color: #3498db;
+  border-color: var(--button-primary);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  margin-top: 5px;
 }
 
 .forgot-password {
@@ -73,9 +123,10 @@
 }
 
 .forgot-password a {
-  color: #3498db;
+  color: var(--link-color);
   text-decoration: none;
   font-size: 0.9rem;
+  transition: color 0.3s ease;
 }
 
 .forgot-password a:hover {
@@ -83,7 +134,7 @@
 }
 
 .submit-button {
-  background: #3498db;
+  background-color: var(--button-primary);
   color: white;
   padding: 12px;
   border: none;
@@ -91,62 +142,63 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .submit-button:hover {
-  background: #2980b9;
+  background-color: var(--button-hover);
+  transform: translateY(-1px);
+}
+
+.submit-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .toggle-form {
   margin-top: 20px;
   text-align: center;
-  color: #34495e;
+  color: var(--text-secondary);
+}
+
+.toggle-form p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .toggle-button {
   background: none;
   border: none;
-  color: #3498db;
+  color: var(--link-color);
   font-weight: 500;
   cursor: pointer;
-  padding: 0 5px;
+  padding: 0;
+  font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 .toggle-button:hover {
   text-decoration: underline;
 }
 
-@media (max-width: 480px) {
-  .login-box {
-    padding: 20px;
-  }
-  
-  .login-box h1 {
-    font-size: 1.75rem;
-  }
-}
-
+/* OTP Form Styles */
 .otp-form {
   text-align: center;
-  padding: 20px 0;
 }
 
 .otp-form h2 {
-  color: #2c3e50;
+  color: var(--text-primary);
   margin-bottom: 10px;
-  font-size: 1.5rem;
+  transition: color 0.3s ease;
 }
 
 .otp-form p {
-  color: #7f8c8d;
+  color: var(--text-secondary);
   margin-bottom: 20px;
-}
-
-.demo-note {
-  color: #e74c3c !important;
-  font-size: 0.9rem;
-  font-style: italic;
+  transition: color 0.3s ease;
 }
 
 .otp-buttons {
@@ -156,48 +208,56 @@
   margin-top: 20px;
 }
 
-.resend-button {
-  background: none;
-  border: 1px solid #3498db;
-  color: #3498db;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
+.resend-button,
+.verify-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.resend-button:hover {
-  background: #3498db;
-  color: white;
+.resend-button {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .verify-button {
-  background: #3498db;
+  background-color: var(--button-primary);
   color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+}
+
+.resend-button:hover {
+  background-color: var(--border-color);
 }
 
 .verify-button:hover {
-  background: #2980b9;
+  background-color: var(--button-hover);
 }
 
-.error-message {
-  color: #e74c3c;
-  margin: 10px 0;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-box {
+    padding: 30px 20px;
+  }
+
+  .login-box h1 {
+    font-size: 1.75rem;
+  }
+
+  .otp-buttons {
+    flex-direction: column;
+  }
+
+  .resend-button,
+  .verify-button {
+    width: 100%;
+  }
+}
+
+.demo-note {
+  color: #e74c3c !important;
   font-size: 0.9rem;
-}
-
-.resend-button:disabled,
-.verify-button:disabled,
-.submit-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+  font-style: italic;
 } 

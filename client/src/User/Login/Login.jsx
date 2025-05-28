@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../components/context/ThemeContext';
 import { sendDemoOTP, verifyDemoOTP } from '../../components/utils/otpUtils';
 import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { isDarkTheme } = useTheme();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: '',
@@ -19,6 +21,11 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Update theme when isDarkTheme changes
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+  }, [isDarkTheme]);
 
   const handleChange = (e) => {
     setFormData({
@@ -80,7 +87,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('http://localhost:5000/api/users/signup', {  // Corrected endpoint here
+      const response = await fetch('http://localhost:5001/api/users/signup', {  // Corrected endpoint here
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -107,23 +114,33 @@ const Login = () => {
       // Login flow
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/users/login', {  // Corrected endpoint here
+        console.log('Attempting login with:', { email: formData.email });
+        const response = await fetch('http://localhost:5001/api/users/login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          credentials: 'include',
           body: JSON.stringify({
             email: formData.email,
             password: formData.password
           })
         });
 
+        console.log('Login response status:', response.status);
         const data = await response.json();
+        console.log('Login response data:', data);
+
         if (response.ok) {
           localStorage.setItem('token', data.token);
+          localStorage.setItem('user', JSON.stringify(data.user));
           navigate('/user/dashboard');
         } else {
           setError(data.message || 'Login failed');
         }
       } catch (error) {
+        console.error('Login error:', error);
         setError('Login failed. Please try again.');
       }
       setLoading(false);
