@@ -51,11 +51,92 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-avatar.editable {
+  cursor: pointer;
 }
 
 .profile-avatar i {
   font-size: 2.5rem;
   color: #3498db;
+}
+
+.profile-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.photo-upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  color: white;
+  border-radius: 50%;
+}
+
+.photo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.photo-action-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 140px;
+}
+
+.photo-action-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.photo-action-btn i {
+  font-size: 1.1rem;
+}
+
+.photo-action-btn.change-photo i {
+  color: #3498db;
+}
+
+.photo-action-btn.remove-photo i {
+  color: #e74c3c;
+}
+
+.photo-action-btn span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: white;
+}
+
+.profile-avatar.editable:hover .photo-upload-overlay {
+  opacity: 1;
 }
 
 .profile-info {
@@ -76,8 +157,8 @@
 
 .header-buttons {
   display: flex;
+  flex-direction: column;
   gap: 1rem;
-  align-items: center;
 }
 
 .edit-button {
@@ -93,6 +174,8 @@
   align-items: center;
   gap: 0.5rem;
   transition: background-color 0.3s ease;
+  width: 100%;
+  justify-content: center;
 }
 
 .edit-button:hover {
@@ -109,10 +192,29 @@
 
 .edit-button.logout {
   background: #e74c3c;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  justify-content: center;
 }
 
 .edit-button.logout:hover {
   background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.edit-button.logout i {
+  font-size: 1.1rem;
 }
 
 .profile-content {
@@ -355,6 +457,11 @@ input:checked + .slider:before {
   .info-grid,
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .photo-action-btn {
+    max-width: 120px;
+    padding: 0.4rem 0.8rem;
   }
 }
 
@@ -774,4 +881,108 @@ body.modal-open {
 
 .theme-toggle i {
   font-size: 1.2rem;
+}
+
+/* Photo Modal Styles */
+.photo-modal {
+  max-width: 400px;
+  width: 90%;
+}
+
+.photo-preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  min-height: 200px;
+}
+
+.preview-photo {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.no-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.no-photo i {
+  font-size: 4rem;
+}
+
+.no-photo span {
+  font-size: 1.1rem;
+}
+
+.photo-modal .photo-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 0 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.photo-modal .photo-action-btn {
+  flex: 1;
+  min-width: 120px;
+  max-width: 150px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.photo-modal .photo-action-btn.change-photo {
+  background: #3498db;
+  color: white;
+  border: none;
+}
+
+.photo-modal .photo-action-btn.remove-photo {
+  background: #e74c3c;
+  color: white;
+  border: none;
+}
+
+.photo-modal .photo-action-btn.save-photo {
+  background: #27ae60;
+  color: white;
+  border: none;
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  .photo-modal {
+    width: 95%;
+    margin: 10px;
+  }
+
+  .photo-preview {
+    min-height: 150px;
+  }
+
+  .preview-photo {
+    max-height: 200px;
+  }
+
+  .photo-modal .photo-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .photo-modal .photo-action-btn {
+    max-width: none;
+  }
 }

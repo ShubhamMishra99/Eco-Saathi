@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Input from './Pages/Input';
 import UserLogin from './User/Login/Login';
@@ -39,15 +40,14 @@ const AppContent = () => {
         } />
       </Routes>
     </Router>
-  );
-};
 
-const App = () => {
+import AppRoutes from './routes';
+
+function App() {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <AppRoutes />
+
   );
-};
+}
 
 export default App;

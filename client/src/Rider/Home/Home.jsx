@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTheme } from '../../components/context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 import './Home.css';
 import Dashboard from './Dashboard/Dashboard';
 import Profile from './Profile/Profile';

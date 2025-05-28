@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { usePickup } from '../../../components/context/PickupContext';
+
+import { useTheme } from '@/context/ThemeContext';
+
 import './Dashboard.css';
 
 const API_BASE_URL = 'http://localhost:5000';
 
 const Dashboard = () => {
+
   const navigate = useNavigate();
   const [isAvailable, setIsAvailable] = useState(true);
+
+  const { isDarkTheme } = useTheme();
+  const [isAvailable, setIsAvailable] = useState(false);
+
   const [dashboardData, setDashboardData] = useState({
     todayEarnings: 0.00,
     pendingPickups: 0,
@@ -51,6 +60,11 @@ const Dashboard = () => {
     localStorage.removeItem('riderToken');
     navigate('/login');
   };
+
+  useEffect(() => {
+    // Update theme when isDarkTheme changes
+    document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+  }, [isDarkTheme]);
 
   const handleAvailabilityToggle = () => {
     const newAvailability = !isAvailable;
