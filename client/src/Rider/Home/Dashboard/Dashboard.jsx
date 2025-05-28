@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTheme } from '@/context/ThemeContext';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const [isAvailable, setIsAvailable] = useState(true);
+  const { isDarkTheme } = useTheme();
+  const [isAvailable, setIsAvailable] = useState(false);
   const [dashboardData, setDashboardData] = useState({
     todayEarnings: 0.00,
     pendingPickups: 0,
@@ -10,6 +12,11 @@ const Dashboard = () => {
     totalEarnings: 0.00,
     recentOrders: []
   });
+
+  useEffect(() => {
+    // Update theme when isDarkTheme changes
+    document.documentElement.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light');
+  }, [isDarkTheme]);
 
   const handleAvailabilityToggle = () => {
     setIsAvailable(!isAvailable);

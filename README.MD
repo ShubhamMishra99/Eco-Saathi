@@ -60,7 +60,7 @@ cd server
 npm install
 node server.js
 ```
-🛠️ Backend runs at: http://localhost:5000
+🛠️ Backend runs at: http://localhost:5001
 
 📌 Ensure MongoDB is running locally or provide a remote MongoDB URI in your .env file.
 

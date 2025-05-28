@@ -6,19 +6,29 @@ const generateToken = require('../utils/jwt');
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
+  console.log('Login attempt for email:', email);
+
   // Basic validation
   if (!email || !password) {
+    console.log('Missing email or password');
     return res.status(400).json({ message: 'Email and password are required' });
   }
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) {
+      console.log('User not found:', email);
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      console.log('Invalid password for user:', email);
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
 
     const token = generateToken(user._id);
+    console.log('Login successful for user:', email);
 
     // Send only required user data (exclude password)
     res.json({
@@ -33,7 +43,7 @@ exports.login = async (req, res) => {
       }
     });
   } catch (err) {
-    console.error(err);
+    console.error('Login error:', err);
     res.status(500).json({ message: 'Server error during login' });
   }
 };

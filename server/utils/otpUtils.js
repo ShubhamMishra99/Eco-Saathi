@@ -2,7 +2,7 @@
 
 export const sendDemoOTP = async (type, contact) => {
   try {
-    const res = await fetch('http://localhost:5000/api/riders/send-otp', {
+    const res = await fetch('http://localhost:5001/api/riders/send-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, contact }),
@@ -15,7 +15,7 @@ export const sendDemoOTP = async (type, contact) => {
 
 export const verifyDemoOTP = async (type, contact, otp) => {
   try {
-    const res = await fetch('http://localhost:5000/api/riders/verify-otp', {
+    const res = await fetch('http://localhost:5001/api/riders/verify-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type, contact, otp }),

@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Input.css';
 
 const Input = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, userType } = useAuth();
+
+  useEffect(() => {
+    // Redirect to appropriate dashboard if already authenticated
+    if (isAuthenticated) {
+      navigate(`/${userType}/dashboard`, { replace: true });
+    }
+  }, [isAuthenticated, userType, navigate]);
 
   const handleRoleSelect = (role) => {
     if (role === 'user') {
