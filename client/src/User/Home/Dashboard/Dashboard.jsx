@@ -1,7 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 
+const API_BASE_URL = 'http://localhost:5000';
+
 const Dashboard = ({ setActiveTab }) => {
+  const [statistics, setStatistics] = useState({
+    totalPickups: 0,
+    pendingRequests: 0,
+    completed: 0,
+    rewardPoints: 0
+  });
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const token = localStorage.getItem('userToken');
+        if (!token) {
+          throw new Error('Authentication required');
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/users/statistics`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            localStorage.removeItem('userToken');
+            throw new Error('Please login again');
+          }
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to fetch statistics');
+        }
+
+        const data = await response.json();
+        setStatistics(data);
+      } catch (error) {
+        console.error('Error fetching statistics:', error);
+        setError(error.message);
+      }
+    };
+
+    fetchStatistics();
+  }, []);
+
   return (
     <div className="dashboard-content">
       <div className="welcome-section">
@@ -18,22 +63,40 @@ const Dashboard = ({ setActiveTab }) => {
 
       <div className="stats-grid">
         <div className="stat-card">
-          <h3>Total Pickups</h3>
-          <p className="stat-value">0</p>
+          <div className="stat-icon">📦</div>
+          <div className="stat-content">
+            <h3>Total Pickups</h3>
+            <p className="stat-value">{statistics.totalPickups}</p>
+          </div>
         </div>
         <div className="stat-card">
-          <h3>Pending Requests</h3>
-          <p className="stat-value">0</p>
+          <div className="stat-icon">⏳</div>
+          <div className="stat-content">
+            <h3>Pending Requests</h3>
+            <p className="stat-value">{statistics.pendingRequests}</p>
+          </div>
         </div>
         <div className="stat-card">
-          <h3>Completed</h3>
-          <p className="stat-value">0</p>
+          <div className="stat-icon">✅</div>
+          <div className="stat-content">
+            <h3>Completed</h3>
+            <p className="stat-value">{statistics.completed}</p>
+          </div>
         </div>
         <div className="stat-card">
-          <h3>Reward Points</h3>
-          <p className="stat-value">0</p>
+          <div className="stat-icon">⭐</div>
+          <div className="stat-content">
+            <h3>Reward Points</h3>
+            <p className="stat-value">{statistics.rewardPoints}</p>
+          </div>
         </div>
       </div>
+
+      {error && (
+        <div className="error-message">
+          {error}
+        </div>
+      )}
 
       <div className="about-section">
         <div className="about-header">

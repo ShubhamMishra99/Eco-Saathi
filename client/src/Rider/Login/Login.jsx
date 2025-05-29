@@ -35,9 +35,16 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (res.ok && data.success) {
+      if (res.ok && data.token) {
         localStorage.setItem('riderToken', data.token);
-        localStorage.setItem('rider', JSON.stringify(data.rider));
+        localStorage.setItem('rider', JSON.stringify({
+          _id: data._id,
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+          vehicleNumber: data.vehicleNumber,
+          vehicleType: data.vehicleType
+        }));
         navigate('/rider/dashboard');
       } else {
         setError(data.message || 'Signup failed');

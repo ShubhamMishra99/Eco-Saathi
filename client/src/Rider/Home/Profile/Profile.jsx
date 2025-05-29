@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 
+const API_BASE_URL = 'http://localhost:5000';
+
 const Profile = () => {
   const navigate = useNavigate();
   const [isDarkTheme, setIsDarkTheme] = useState(() => {
@@ -9,6 +11,9 @@ const Profile = () => {
     const savedTheme = localStorage.getItem('theme');
     return savedTheme === 'dark';
   });
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // Apply theme on mount and when theme changes
   useEffect(() => {
@@ -61,6 +66,60 @@ const Profile = () => {
     };
   }, [showRatingModal, showPickupModal]);
 
+  // Fetch profile data
+  const fetchProfileData = async () => {
+    try {
+      const token = localStorage.getItem('riderToken');
+      if (!token) {
+        navigate('/rider/login');
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/api/riders/profile`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch profile');
+      }
+
+      const data = await response.json();
+      setProfileData({
+        ...profileData,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        vehicleType: data.vehicleType,
+        vehicleNumber: data.vehicleNumber,
+        totalPickups: data.totalPickups,
+        completedPickups: data.completedPickups,
+        rating: data.rating,
+        isAvailable: data.isAvailable,
+        joinedDate: new Date(data.joinedDate).toLocaleDateString(),
+        rewardPoints: data.rewardPoints
+      });
+      setEditedData({
+        ...profileData,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        vehicleType: data.vehicleType,
+        vehicleNumber: data.vehicleNumber
+      });
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      setError('Failed to load profile data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedData(prevState => ({
@@ -69,15 +128,42 @@ const Profile = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setProfileData(editedData);
-    setIsEditing(false);
-    // TODO: Add API call to update profile
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('riderToken');
+      const response = await fetch(`${API_BASE_URL}/api/riders/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(editedData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      const data = await response.json();
+      setProfileData(prevState => ({
+        ...prevState,
+        ...data
+      }));
+      setIsEditing(false);
+      setError('');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      setError('Failed to update profile');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleLogout = () => {
-    // TODO: Add logout logic
+    localStorage.removeItem('riderToken');
+    localStorage.removeItem('rider');
     navigate('/rider/login');
   };
 
@@ -103,16 +189,16 @@ const Profile = () => {
     );
   };
 
-  const getStatusColor = (status) => {
+  const getStatusClass = (status) => {
     switch (status.toLowerCase()) {
       case 'completed':
-        return '#4CAF50';
-      case 'cancelled':
-        return '#f44336';
+        return 'completed';
       case 'in progress':
-        return '#2196F3';
+        return 'in-progress';
+      case 'cancelled':
+        return 'cancelled';
       default:
-        return '#757575';
+        return '';
     }
   };
 
@@ -122,172 +208,200 @@ const Profile = () => {
 
   return (
     <div className="profile-section">
-      <div className="profile-header">
-        <div className="profile-avatar">
-          <i className="fas fa-user"></i>
+      {error && (
+        <div className="error-message">
+          <i className="fas fa-exclamation-circle"></i>
+          {error}
         </div>
-        <div className="profile-info">
-          <h2>{profileData.name}</h2>
-          <p className="member-since">Member since {profileData.joinedDate}</p>
-        </div>
-        <div className="header-buttons">
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            title={isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
-          >
-            <i className={`fas fa-${isDarkTheme ? 'sun' : 'moon'}`}></i>
-          </button>
-          <button
-            className={`edit-button ${isEditing ? 'cancel' : ''}`}
-            onClick={() => setIsEditing(!isEditing)}
-          >
-            <i className={`fas fa-${isEditing ? 'times' : 'edit'}`}></i>
-            {isEditing ? 'Cancel' : 'Edit Profile'}
-          </button>
-          <button
-            className="edit-button logout"
-            onClick={handleLogout}
-          >
-            <i className="fas fa-sign-out-alt"></i>
-            Logout
-          </button>
-        </div>
-      </div>
+      )}
 
-      <div className="profile-content">
-        {isEditing ? (
-          <form onSubmit={handleSubmit}>
-            <div className="form-section">
-              <h3>Personal Information</h3>
-              <div className="form-group">
-                <label htmlFor="name">Full Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={editedData.name}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={editedData.email}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="phone">Phone Number</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  value={editedData.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+      {loading ? (
+        <div className="loading-spinner">
+          <i className="fas fa-spinner fa-spin"></i>
+          Loading...
+        </div>
+      ) : (
+        <>
+          <div className="profile-header">
+            <div className="profile-avatar">
+              <i className="fas fa-user"></i>
             </div>
-
-            <div className="form-section">
-              <h3>Vehicle Information</h3>
-              <div className="form-group">
-                <label htmlFor="vehicleType">Vehicle Type</label>
-                <select
-                  id="vehicleType"
-                  name="vehicleType"
-                  value={editedData.vehicleType}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="Bike">Bike</option>
-                  <option value="Scooter">Scooter</option>
-                  <option value="Car">Car</option>
-                  <option value="Van">Van</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="vehicleNumber">Vehicle Number</label>
-                <input
-                  type="text"
-                  id="vehicleNumber"
-                  name="vehicleNumber"
-                  value={editedData.vehicleNumber}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+            <div className="profile-info">
+              <h2>{profileData.name}</h2>
+              <p className="member-since">Member since {profileData.joinedDate}</p>
             </div>
-
-            <div className="form-actions">
-              <button type="submit" className="save-button">
-                <i className="fas fa-save"></i>
-                Save Changes
+            <div className="header-buttons">
+              <button
+                className="theme-toggle"
+                onClick={toggleTheme}
+                title={isDarkTheme ? "Switch to Light Theme" : "Switch to Dark Theme"}
+              >
+                <i className={`fas fa-${isDarkTheme ? 'sun' : 'moon'}`}></i>
+              </button>
+              <button
+                className={`edit-button ${isEditing ? 'cancel' : ''}`}
+                onClick={() => setIsEditing(!isEditing)}
+              >
+                <i className={`fas fa-${isEditing ? 'times' : 'edit'}`}></i>
+                {isEditing ? 'Cancel' : 'Edit Profile'}
+              </button>
+              <button
+                className="edit-button logout"
+                onClick={handleLogout}
+              >
+                <i className="fas fa-sign-out-alt"></i>
+                Logout
               </button>
             </div>
-          </form>
-        ) : (
-          <>
-            <div className="info-section">
-              <h3>Personal Information</h3>
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="label">Name</span>
-                  <span className="value">{profileData.name}</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Email</span>
-                  <span className="value">{profileData.email}</span>
-                </div>
-                <div className="info-item">
-                  <span className="label">Phone</span>
-                  <span className="value">{profileData.phone}</span>
-                </div>
-              </div>
-            </div>
+          </div>
 
-            <div className="info-section">
-              <h3>Vehicle Information</h3>
-              <div className="info-grid">
-                <div className="info-item">
-                  <span className="label">Vehicle Type</span>
-                  <span className="value">{profileData.vehicleType}</span>
+          <div className="profile-content">
+            {isEditing ? (
+              <form onSubmit={handleSubmit}>
+                <div className="form-section">
+                  <h3>Personal Information</h3>
+                  <div className="form-group">
+                    <label htmlFor="name">Full Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={editedData.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email Address</label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={editedData.email}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone Number</label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={editedData.phone}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="info-item">
-                  <span className="label">Vehicle Number</span>
-                  <span className="value">{profileData.vehicleNumber}</span>
-                </div>
-              </div>
-            </div>
 
-            <div className="stats-section">
-              <h3>Work Statistics</h3>
-              <div className="stats-grid">
-                <div className="stat-card clickable" onClick={() => setShowPickupModal(true)}>
-                  <span className="stat-value">{profileData.totalPickups}</span>
-                  <span className="stat-label">Total Pickups</span>
-                  <i className="fas fa-chevron-right"></i>
+                <div className="form-section">
+                  <h3>Vehicle Information</h3>
+                  <div className="form-group">
+                    <label htmlFor="vehicleNumber">Vehicle Number</label>
+                    <input
+                      type="text"
+                      id="vehicleNumber"
+                      name="vehicleNumber"
+                      value={editedData.vehicleNumber}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="vehicleType">Vehicle Type</label>
+                    <select
+                      id="vehicleType"
+                      name="vehicleType"
+                      value={editedData.vehicleType}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Select vehicle type</option>
+                      <option value="mini_truck">Mini Truck</option>
+                      <option value="pickup_van">Pickup Van</option>
+                      <option value="e_rickshaw">E-Rickshaw</option>
+                      <option value="cargo_bike">Cargo Bike</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="stat-card clickable" onClick={() => setShowRatingModal(true)}>
-                  <span className="stat-value">{profileData.rating}</span>
-                  <span className="stat-label">Rating</span>
-                  <i className="fas fa-chevron-right"></i>
+
+                <div className="form-actions">
+                  <button type="submit" className="save-button" disabled={loading}>
+                    {loading ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin"></i>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-save"></i>
+                        Save Changes
+                      </>
+                    )}
+                  </button>
                 </div>
-                <div className="stat-card">
-                  <span className="stat-value">{profileData.joinedDate}</span>
-                  <span className="stat-label">Joined Date</span>
+              </form>
+            ) : (
+              <>
+                <div className="info-section">
+                  <h3>Personal Information</h3>
+                  <div className="info-grid">
+                    <div className="info-item">
+                      <span className="label">Name</span>
+                      <span className="value">{profileData.name}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="label">Email</span>
+                      <span className="value">{profileData.email}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="label">Phone</span>
+                      <span className="value">{profileData.phone}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
+
+                <div className="info-section">
+                  <h3>Vehicle Information</h3>
+                  <div className="info-grid">
+                    <div className="info-item">
+                      <span className="label">Vehicle Number</span>
+                      <span className="value">{profileData.vehicleNumber}</span>
+                    </div>
+                    <div className="info-item">
+                      <span className="label">Vehicle Type</span>
+                      <span className="value">{profileData.vehicleType}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="stats-section">
+                  <h3>Activity Statistics</h3>
+                  <div className="stats-grid">
+                    <div className="stat-card">
+                      <span className="stat-value">{profileData.totalPickups}</span>
+                      <span className="stat-label">Total Pickups</span>
+                    </div>
+                    <div className="stat-card">
+                      <span className="stat-value">{profileData.completedPickups}</span>
+                      <span className="stat-label">Completed Pickups</span>
+                    </div>
+                    <div className="stat-card">
+                      <span className="stat-value">{profileData.rating.toFixed(1)}</span>
+                      <span className="stat-label">Rating</span>
+                    </div>
+                    <div className="stat-card">
+                      <span className="stat-value">{profileData.rewardPoints}</span>
+                      <span className="stat-label">Reward Points</span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Rating Modal */}
       {showRatingModal && (
@@ -371,10 +485,7 @@ const Profile = () => {
                     <div key={pickup.id} className="pickup-card">
                       <div className="pickup-header">
                         <span className="pickup-id">#{pickup.id}</span>
-                        <span 
-                          className="pickup-status"
-                          style={{ backgroundColor: getStatusColor(pickup.status) }}
-                        >
+                        <span className={`pickup-status ${getStatusClass(pickup.status)}`}>
                           {pickup.status}
                         </span>
                       </div>
