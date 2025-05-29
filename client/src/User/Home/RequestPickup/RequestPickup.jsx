@@ -53,7 +53,7 @@ const RequestPickup = () => {
     setIsSubmitting(true);
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('userToken');
       if (!token) {
         throw new Error('Authentication required. Please login again.');
       }

@@ -13,6 +13,9 @@ const Dashboard = () => {
     pendingPickups: 0,
     completedToday: 0,
     totalEarnings: 0.00,
+    totalPickups: 0,
+    completedPickups: 0,
+    rewardPoints: 0,
     recentOrders: []
   });
   const [error, setError] = useState(null);
@@ -76,6 +79,12 @@ const Dashboard = () => {
   const handleCompletionSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Check if pickup is already completed
+      if (selectedPickup.pickup.status === 'completed') {
+        setError('This pickup has already been completed');
+        return;
+      }
+
       // Validate actual quantity is a number
       const actualQuantity = parseFloat(completionData.actualQuantity);
       if (isNaN(actualQuantity) || actualQuantity <= 0) {
@@ -114,24 +123,51 @@ const Dashboard = () => {
         return;
       }
 
-      const response = await fetch(`${API_BASE_URL}/api/riders/orders`, {
+      // First try to fetch orders
+      const ordersResponse = await fetch(`${API_BASE_URL}/api/riders/orders`, {
         headers: getAuthHeaders()
       });
 
-      if (response.status === 401) {
+      if (ordersResponse.status === 401) {
         handleAuthError();
         return;
       }
 
-      if (response.ok) {
-        const orders = await response.json();
-        setDashboardData(prev => ({
-          ...prev,
-          recentOrders: orders
-        }));
-      } else {
-        const data = await response.json();
-        throw new Error(data.message || 'Failed to fetch orders');
+      if (!ordersResponse.ok) {
+        const errorData = await ordersResponse.json().catch(() => ({ message: 'Failed to fetch orders' }));
+        throw new Error(errorData.message);
+      }
+
+      const orders = await ordersResponse.json();
+      setDashboardData(prev => ({
+        ...prev,
+        recentOrders: orders
+      }));
+
+      // Then try to fetch statistics
+      try {
+        const statsResponse = await fetch(`${API_BASE_URL}/api/riders/statistics`, {
+          headers: getAuthHeaders()
+        });
+
+        if (statsResponse.ok) {
+          const stats = await statsResponse.json();
+          setDashboardData(prev => ({
+            ...prev,
+            totalPickups: stats.totalPickups || 0,
+            completedPickups: stats.completedPickups || 0,
+            pendingPickups: stats.pendingPickups || 0,
+            rewardPoints: stats.rewardPoints || 0,
+            todayEarnings: stats.todayEarnings || 0,
+            completedToday: stats.completedToday || 0,
+            totalEarnings: stats.totalEarnings || 0
+          }));
+        } else {
+          console.error('Failed to fetch statistics:', statsResponse.status);
+        }
+      } catch (statsError) {
+        console.error('Error fetching statistics:', statsError);
+        // Don't throw here, we still want to show orders even if stats fail
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
@@ -247,7 +283,7 @@ const Dashboard = () => {
                   <button 
                     type="submit"
                     className="accept-btn"
-                    disabled={isPickupLoading}
+                    disabled={isPickupLoading || selectedPickup.pickup.status === 'completed'}
                   >
                     {isPickupLoading ? 'Completing...' : 'Complete Pickup'}
                   </button>
@@ -292,7 +328,42 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* 🔢 Metrics */}
+      {/* 🔢 Statistics */}
+      <div className="stats-grid">
+        <div className="stat-card">
+          <div className="stat-icon">📦</div>
+          <div className="stat-content">
+            <h3>Total Pickups</h3>
+            <p className="stat-value">{dashboardData.totalPickups}</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">⏳</div>
+          <div className="stat-content">
+            <h3>Pending Requests</h3>
+            <p className="stat-value">{dashboardData.pendingPickups}</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">✅</div>
+          <div className="stat-content">
+            <h3>Completed</h3>
+            <p className="stat-value">{dashboardData.completedPickups}</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon">⭐</div>
+          <div className="stat-content">
+            <h3>Reward Points</h3>
+            <p className="stat-value">{dashboardData.rewardPoints}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* 🔢 Earnings Metrics */}
       <div className="dashboard-grid">
         <div className="dashboard-card">
           <div className="card-icon"><i className="fas fa-rupee-sign"></i></div>
@@ -303,13 +374,6 @@ const Dashboard = () => {
         </div>
         <div className="dashboard-card">
           <div className="card-icon"><i className="fas fa-clock"></i></div>
-          <div className="card-content">
-            <h3>Pending Pickups</h3>
-            <p className="count">{dashboardData.pendingPickups}</p>
-          </div>
-        </div>
-        <div className="dashboard-card">
-          <div className="card-icon"><i className="fas fa-check-circle"></i></div>
           <div className="card-content">
             <h3>Completed Today</h3>
             <p className="count">{dashboardData.completedToday}</p>

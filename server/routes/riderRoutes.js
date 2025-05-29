@@ -76,11 +76,29 @@ router.post('/accept-pickup', async (req, res) => {
   }
 });
 
+// Helper function to calculate reward breakdown
+const calculateRewardBreakdown = (actualQuantity) => {
+  const basePoints = Math.floor(actualQuantity * 10);
+  const bonusPoints = Math.floor(actualQuantity / 10) * 50;
+  
+  return {
+    basePoints,
+    bonusPoints,
+    total: basePoints + bonusPoints,
+    breakdown: {
+      perKgPoints: `${actualQuantity} kg × 10 points = ${basePoints} points`,
+      tenKgBonus: actualQuantity >= 10 ? 
+        `${Math.floor(actualQuantity / 10)} × 50 bonus points = ${bonusPoints} points` : 
+        'No bonus (less than 10kg)',
+    }
+  };
+};
+
 // Complete pickup request
 router.post('/complete-pickup', async (req, res) => {
   try {
     const { pickupId, actualQuantity, notes } = req.body;
-    const riderId = req.rider.id; // Use req.rider instead of req.user
+    const riderId = req.rider.id;
 
     // Find the pickup request and related order
     const pickup = await Pickup.findById(pickupId);
@@ -104,14 +122,17 @@ router.post('/complete-pickup', async (req, res) => {
     pickup.status = 'completed';
     await pickup.save();
 
+    // Calculate reward points and breakdown
+    const rewardCalculation = calculateRewardBreakdown(actualQuantity);
+
     // Update the order
     const order = await Order.findOne({ pickup: pickupId });
     if (order) {
       order.status = 'completed';
       order.actualWeight = actualQuantity;
       order.notes = notes;
-      // You might want to calculate the amount based on the actual quantity and scrap type
-      // order.amount = calculateAmount(actualQuantity, pickup.scrapType);
+      order.amount = 5; // Set fixed amount of ₹5 for each completed pickup
+      order.rewardPoints = rewardCalculation.total;
       await order.save();
     }
 
@@ -121,14 +142,19 @@ router.post('/complete-pickup', async (req, res) => {
         pickupId,
         status: 'completed',
         actualQuantity,
-        notes
+        notes,
+        amount: 5,
+        rewardPoints: rewardCalculation.total,
+        rewardBreakdown: rewardCalculation.breakdown
       });
     }
 
     res.json({ 
       message: 'Pickup completed successfully', 
       pickup,
-      order 
+      order,
+      rewardPoints: rewardCalculation.total,
+      rewardBreakdown: rewardCalculation.breakdown
     });
   } catch (error) {
     console.error('Error completing pickup:', error);
@@ -199,5 +225,84 @@ router.get('/orders', async (req, res) => {
     });
   }
 });
+
+// Get rider statistics
+router.get('/statistics', async (req, res) => {
+  try {
+    const riderId = req.rider.id;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Get all pickups and orders for this rider
+    const [allOrders, todayOrders, allPickups] = await Promise.all([
+      Order.find({ rider: riderId }).populate('pickup'),
+      Order.find({
+        rider: riderId,
+        createdAt: { $gte: today }
+      }),
+      Pickup.find({ rider: riderId })
+    ]);
+
+    // Calculate earnings (₹5 per completed pickup)
+    const completedOrders = allOrders.filter(order => order.status === 'completed');
+    const todayCompletedOrders = todayOrders.filter(order => order.status === 'completed');
+
+    // Calculate reward points based on actual weight
+    let rewardPoints = 0;
+    completedOrders.forEach(order => {
+      if (order.actualWeight) {
+        // Base points: 10 points per kg
+        rewardPoints += Math.floor(order.actualWeight * 10);
+        
+        // Bonus points: 50 points for every 10kg
+        rewardPoints += Math.floor(order.actualWeight / 10) * 50;
+      }
+    });
+
+    // Monthly consistency bonus (100 points)
+    // Get the first day of current month
+    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+    const monthlyOrders = await Order.find({
+      rider: riderId,
+      status: 'completed',
+      createdAt: { $gte: firstDayOfMonth }
+    });
+    
+    // If there's at least one completed order this month
+    if (monthlyOrders.length > 0) {
+      rewardPoints += 100;
+    }
+
+    // Special achievements (200 points for every 100kg milestone)
+    const totalWeight = completedOrders.reduce((sum, order) => sum + (order.actualWeight || 0), 0);
+    const milestones = Math.floor(totalWeight / 100);
+    rewardPoints += milestones * 200;
+    
+    const statistics = {
+      totalPickups: allPickups.length,
+      completedPickups: allPickups.filter(pickup => pickup.status === 'completed').length,
+      pendingPickups: allPickups.filter(pickup => pickup.status === 'accepted').length,
+      completedToday: todayCompletedOrders.length,
+      todayEarnings: todayCompletedOrders.length * 5, // ₹5 per completed pickup today
+      totalEarnings: completedOrders.length * 5, // ₹5 per completed pickup total
+      rewardPoints: rewardPoints,
+      totalWeight: totalWeight
+    };
+
+    res.json(statistics);
+  } catch (error) {
+    console.error('Error fetching statistics:', error);
+    res.status(500).json({ 
+      message: 'Failed to fetch statistics',
+      error: error.message 
+    });
+  }
+});
+
+// Profile routes
+router.get('/profile', RiderController.getProfile);
+router.put('/profile', RiderController.updateProfile);
+router.put('/change-password', RiderController.changePassword);
+router.put('/availability', RiderController.updateAvailability);
 
 module.exports = router;

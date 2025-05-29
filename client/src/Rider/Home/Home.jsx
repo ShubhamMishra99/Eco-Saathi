@@ -4,8 +4,6 @@ import { useTheme } from '../../components/context/ThemeContext';
 import './Home.css';
 import Dashboard from './Dashboard/Dashboard';
 import Profile from './Profile/Profile';
-import Orders from './Orders/Orders';
-import Earnings from './Earnings/Earnings';
 import Footer from './Footer/Footer';
 
 const Home = () => {
@@ -52,20 +50,6 @@ const Home = () => {
           >
             <i className="fas fa-info-circle"></i>
             About
-          </button>
-          <button 
-            className={`nav-button ${activeSection === 'orders' ? 'active' : ''}`}
-            onClick={() => handleNavigation('orders')}
-          >
-            <i className="fas fa-box"></i>
-            Orders
-          </button>
-          <button 
-            className={`nav-button ${activeSection === 'earnings' ? 'active' : ''}`}
-            onClick={() => handleNavigation('earnings')}
-          >
-            <i className="fas fa-rupee-sign"></i>
-            Earnings
           </button>
           <button 
             className={`nav-button ${activeSection === 'profile' ? 'active' : ''}`}

@@ -35,6 +35,10 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  rewardPoints: {
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now
