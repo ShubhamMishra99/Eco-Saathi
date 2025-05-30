@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://eco-saathi-2.onrender.com';
 
 const Profile = () => {
   const navigate = useNavigate();

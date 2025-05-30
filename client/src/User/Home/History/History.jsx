@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import './History.css';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://eco-saathi-2.onrender.com';
 const socket = io(API_BASE_URL);
 
 const History = () => {
@@ -59,7 +59,7 @@ const History = () => {
         throw new Error('Authentication required');
       }
 
-      const response = await fetch('http://localhost:5000/api/users/pickups', {
+      const response = await fetch('https://eco-saathi-2.onrender.com/api/users/pickups', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

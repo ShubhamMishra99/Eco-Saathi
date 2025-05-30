@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { usePickup } from '../../components/context/PickupContext';
 import './RiderOrders.css';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://eco-saathi-2.onrender.com';
 
 const RiderOrders = () => {
   const [orders, setOrders] = useState([]);

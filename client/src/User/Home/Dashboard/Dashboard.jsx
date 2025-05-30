@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://eco-saathi-2.onrender.com';
 
 const Dashboard = ({ setActiveTab }) => {
   const [statistics, setStatistics] = useState({

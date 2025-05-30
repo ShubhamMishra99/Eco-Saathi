@@ -25,7 +25,7 @@ const Login = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('http://localhost:5000/api/users/signup', {
+      const response = await fetch('https://eco-saathi-2.onrender.com/api/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -52,7 +52,7 @@ const Login = () => {
       // Login flow
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/users/login', {
+        const response = await fetch('https://eco-saathi-2.onrender.com/api/users/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { usePickup } from '../../../components/context/PickupContext';
 import './Dashboard.css';
 
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = 'https://eco-saathi-2.onrender.com';
 
 const Dashboard = () => {
   const navigate = useNavigate();
