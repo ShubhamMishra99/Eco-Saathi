@@ -146,5 +146,156 @@ exports.getPickups = async (req, res) => {
   }
 };
 
+// ========================
+// GET USER PROFILE
+// ========================
+exports.getProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Get user's pickups for statistics
+    const pickups = await Pickup.find({ user: user._id });
+    const completedPickups = pickups.filter(pickup => pickup.status === 'completed');
+
+    // Calculate reward points
+    const rewardPoints = completedPickups.reduce((total, pickup) => {
+      // Base points (10 per kg)
+      let points = Math.floor((pickup.actualWeight || 0) * 10);
+      // Bonus points (50 points per 10kg)
+      points += Math.floor((pickup.actualWeight || 0) / 10) * 50;
+      return total + points;
+    }, 0);
+
+    res.json({
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      isEmailVerified: user.isEmailVerified,
+      isPhoneVerified: user.isPhoneVerified,
+      joinedDate: user.createdAt,
+      totalPickups: pickups.length,
+      rewardPoints
+    });
+  } catch (error) {
+    console.error('Error in getProfile:', error);
+    res.status(500).json({ message: 'Failed to fetch profile' });
+  }
+};
+
+// ========================
+// UPDATE USER PROFILE
+// ========================
+exports.updateProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { name, email, phone } = req.body;
+
+    // Check if email is being changed and if it's already taken
+    if (email !== user.email) {
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: 'Email already in use' });
+      }
+      user.isEmailVerified = false; // Reset email verification if email is changed
+    }
+
+    // Check if phone is being changed
+    if (phone !== user.phone) {
+      const phoneExists = await User.findOne({ phone });
+      if (phoneExists) {
+        return res.status(400).json({ message: 'Phone number already in use' });
+      }
+      user.isPhoneVerified = false; // Reset phone verification if phone is changed
+    }
+
+    user.name = name || user.name;
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phone: updatedUser.phone,
+      isEmailVerified: updatedUser.isEmailVerified,
+      isPhoneVerified: updatedUser.isPhoneVerified
+    });
+  } catch (error) {
+    console.error('Error in updateProfile:', error);
+    res.status(500).json({ message: 'Failed to update profile' });
+  }
+};
+
+// ========================
+// CHANGE PASSWORD
+// ========================
+exports.changePassword = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const { currentPassword, newPassword } = req.body;
+
+    // Verify current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Current password is incorrect' });
+    }
+
+    // Hash new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    res.json({ message: 'Password updated successfully' });
+  } catch (error) {
+    console.error('Error in changePassword:', error);
+    res.status(500).json({ message: 'Failed to change password' });
+  }
+};
+
+// ========================
+// GET USER STATISTICS
+// ========================
+exports.getStatistics = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const pickups = await Pickup.find({ user: userId });
+
+    const statistics = {
+      totalPickups: pickups.length,
+      pendingRequests: pickups.filter(pickup => pickup.status === 'pending').length,
+      completed: pickups.filter(pickup => pickup.status === 'completed').length,
+      rewardPoints: pickups
+        .filter(pickup => pickup.status === 'completed')
+        .reduce((total, pickup) => {
+          // Base points (10 per kg)
+          let points = Math.floor((pickup.actualWeight || 0) * 10);
+          // Bonus points (50 points per 10kg)
+          points += Math.floor((pickup.actualWeight || 0) / 10) * 50;
+          return total + points;
+        }, 0)
+    };
+
+    res.json(statistics);
+  } catch (error) {
+    console.error('Error fetching user statistics:', error);
+    res.status(500).json({ 
+      message: 'Failed to fetch statistics',
+      error: error.message 
+    });
+  }
+};
+
 // Export the socket initializer as well
 exports.setSocketInstance = setSocketInstance;
