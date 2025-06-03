@@ -4,6 +4,16 @@
 
 ---
 
+## 🚀 Live Demo
+
+Explore the fully functional Eco Saathi platform live in your browser:
+
+🌐 https://eco-saathi-vaxw-client.vercel.app/
+
+Try out features like real-time waste tracking, easy pickup scheduling, and insightful analytics to experience seamless eco-friendly waste management.
+
+---
+
 ## 🌐 Features
 
 - 🗑️ **Waste Tracking**: Monitor household and commercial waste generation and disposal.  
@@ -38,7 +48,7 @@
 
 Follow the steps below to set up the project locally:
 
- 1. Clone the Repository
+1. Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/ecosaathi.git
